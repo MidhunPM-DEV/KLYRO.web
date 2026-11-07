@@ -185,18 +185,18 @@ export default function ProductDetailModal() {
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-[#005E23] py-2.5 px-2 text-[11px] sm:text-xs font-bold text-white shadow-xs transition-all hover:bg-[#004719] hover:border-[#004719] active:scale-95"
+                className="flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-white py-2.5 px-2 text-[11px] sm:text-xs font-bold text-[#005E23] shadow-xs transition-all hover:bg-[#F2F7F4] active:scale-95"
               >
-                {added ? <Check size={14} /> : <ShoppingBag size={14} />}
+                {added ? <Check size={14} className="text-[#005E23]" /> : <ShoppingBag size={14} className="text-[#005E23]" />}
                 <span className="truncate">{added ? "Added!" : "Add to Cart"}</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleWhatsAppOrder}
-                className="flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#25D366] bg-white py-2.5 px-2 text-[11px] sm:text-xs font-bold text-[#005E23] transition-all hover:bg-[#25D366] hover:text-white active:scale-95"
+                className="flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-[#005E23] py-2.5 px-2 text-[11px] sm:text-xs font-bold text-white shadow-sm transition-all hover:bg-[#004719] hover:border-[#004719] active:scale-95"
               >
-                <MessageCircle size={15} className="text-[#25D366]" />
+                <MessageCircle size={15} />
                 <span className="truncate">Buy via WhatsApp</span>
               </button>
             </div>
