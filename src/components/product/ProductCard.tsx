@@ -18,15 +18,11 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
   const { addToCart, openQuickView } = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    addToCart(product, 1, product.variants?.[0]?.options[0], false);
+  const handleAddToCart = () => {
+    addToCart(product, 1, product.variants?.[0]?.options[0], true);
   };
 
-  const handleBuyNow = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleBuyNow = () => {
     addToCart(product, 1, product.variants?.[0]?.options[0], true);
   };
 

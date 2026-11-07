@@ -87,6 +87,7 @@ export default function HeroSection() {
                   alt="KLYRO Portable Mini Blender"
                   fill
                   priority
+                  loading="eager"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover object-center"
                 />
@@ -122,6 +123,7 @@ export default function HeroSection() {
                   src="https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=85"
                   alt="Wireless Pocket Speaker"
                   fill
+                  loading="eager"
                   sizes="220px"
                   className="object-cover"
                 />
