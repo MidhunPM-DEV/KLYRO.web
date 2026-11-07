@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Heart, Star, Eye } from "lucide-react";
+import { Heart, Star } from "lucide-react";
 import { Product } from "@/src/types";
 import { useCart } from "@/src/context/CartContext";
 import AddToCartButton from "@/src/components/buttons/AddToCartButton";
@@ -63,18 +63,8 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
             </span>
           )}
 
-          {/* Top-Right Floating Actions: Quick View & Wishlist Heart */}
+          {/* Top-Right Floating Actions: Wishlist Heart */}
           <div className="absolute right-3 top-3 z-10 flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={handleQuickView}
-              aria-label={`Quick view ${product.name}`}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#555555] opacity-0 shadow-xs border border-white/80 backdrop-blur-xs transition-all duration-200 hover:bg-[#005E23] hover:text-white group-hover:opacity-100"
-              title="Quick View"
-            >
-              <Eye size={15} />
-            </button>
-
             <button
               type="button"
               onClick={handleToggleWishlist}
