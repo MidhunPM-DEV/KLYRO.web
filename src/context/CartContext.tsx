@@ -6,7 +6,7 @@ import { siteConfig } from '@/src/data/products';
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: Product, quantity?: number, selectedVariant?: string) => void;
+  addToCart: (product: Product, quantity?: number, selectedVariant?: string, openDrawer?: boolean) => void;
   removeFromCart: (productId: string, selectedVariant?: string) => void;
   updateQuantity: (productId: string, quantity: number, selectedVariant?: string) => void;
   clearCart: () => void;
@@ -64,7 +64,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [cart, isLoaded]);
 
-  const addToCart = (product: Product, quantity: number = 1, selectedVariant?: string) => {
+  const addToCart = (
+    product: Product,
+    quantity: number = 1,
+    selectedVariant?: string,
+    openDrawer: boolean = true
+  ) => {
     setCart((prev) => {
       const existingIndex = prev.findIndex(
         (item) => item.product.id === product.id && item.selectedVariant === selectedVariant
@@ -76,7 +81,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, { product, quantity, selectedVariant }];
     });
-    setIsCartOpen(true);
+    if (openDrawer) {
+      setIsCartOpen(true);
+    }
   };
 
   const removeFromCart = (productId: string, selectedVariant?: string) => {
