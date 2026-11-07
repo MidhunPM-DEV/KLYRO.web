@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { LayoutDashboard, ShoppingBag, Package, MessageSquare, Users, Settings, ExternalLink, ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { LayoutDashboard, ShoppingBag, Package, MessageSquare, Users, Settings, ExternalLink, LogOut } from 'lucide-react';
 
 interface SidebarProps {
   currentTab: string;
@@ -14,6 +15,17 @@ export default function AdminSidebar({
   setCurrentTab,
   pendingOrdersCount = 0,
 }: SidebarProps) {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Clear auth from localStorage
+    localStorage.removeItem('adminAuth');
+    localStorage.removeItem('adminUser');
+    
+    // Redirect to login page
+    router.push('/login');
+  };
+
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'orders', label: 'Orders', icon: ShoppingBag, badge: pendingOrdersCount > 0 ? pendingOrdersCount : undefined },
@@ -92,6 +104,16 @@ export default function AdminSidebar({
         >
           <span>WhatsApp Support Desk</span>
         </a>
+
+        {/* Logout Button */}
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-xs font-semibold text-white transition-colors"
+        >
+          <LogOut size={14} />
+          <span>Logout</span>
+        </button>
       </div>
     </aside>
   );

@@ -6,6 +6,6 @@ module.exports = {
   supportEmail: "support@klyro.com",
   freeShippingThreshold: 499,
   standardShippingFee: 49,
-  port: process.env.PORT || 5000,
+  port: process.env.PORT || 5001,
 };
 
