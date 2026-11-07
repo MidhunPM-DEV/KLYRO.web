@@ -7,9 +7,8 @@ import MobileMenu from "./MobileMenu";
 const links = [
   { label: "Home", href: "/" },
   { label: "Shop", href: "/shop" },
-  { label: "Categories", href: "#categories" },
-  { label: "Deals", href: "#deals" },
-  { label: "New arrivals", href: "#new-arrivals" },
+  { label: "Track Order", href: "/track" },
+  { label: "FAQ", href: "/faq" },
 ];
 
 function IconLink({ label, href, children }: { label: string; href: string; children: ReactNode }) {

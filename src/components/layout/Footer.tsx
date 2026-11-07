@@ -121,7 +121,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#faq" className="transition-colors hover:text-white">
+                <Link href="/faq" className="transition-colors hover:text-white">
                   Frequently Asked Questions
                 </Link>
               </li>
