@@ -181,23 +181,23 @@ export default function ProductDetailModal() {
 
           {/* Action Buttons */}
           <div className="mt-6 pt-4 border-t border-[#E8ECE6] space-y-2.5">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2.5">
               <button
                 type="button"
                 onClick={handleAddToCart}
-                className="flex items-center justify-center gap-2 rounded-full bg-[#005E23] py-3 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#004719] active:scale-95"
+                className="flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-[#005E23] py-2.5 px-2 text-[11px] sm:text-xs font-bold text-white shadow-xs transition-all hover:bg-[#004719] hover:border-[#004719] active:scale-95"
               >
-                {added ? <Check size={16} /> : <ShoppingBag size={16} />}
-                <span>{added ? "Added!" : "Add to Cart"}</span>
+                {added ? <Check size={14} /> : <ShoppingBag size={14} />}
+                <span className="truncate">{added ? "Added!" : "Add to Cart"}</span>
               </button>
 
               <button
                 type="button"
                 onClick={handleWhatsAppOrder}
-                className="flex items-center justify-center gap-2 rounded-full border-2 border-[#005E23] bg-white py-3 text-xs font-bold uppercase tracking-wider text-[#005E23] transition-all hover:bg-[#005E23] hover:text-white active:scale-95"
+                className="flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#25D366] bg-white py-2.5 px-2 text-[11px] sm:text-xs font-bold text-[#005E23] transition-all hover:bg-[#25D366] hover:text-white active:scale-95"
               >
-                <MessageCircle size={16} className="text-[#25D366]" />
-                <span>Buy via WhatsApp</span>
+                <MessageCircle size={15} className="text-[#25D366]" />
+                <span className="truncate">Buy via WhatsApp</span>
               </button>
             </div>
 

@@ -156,22 +156,22 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
       </div>
 
       {/* Dual CTA Buttons Side-by-Side (Rounded Rectangle Style) */}
-      <div className="mt-4 grid grid-cols-2 gap-2.5 pt-1">
+      <div className="mt-4 grid grid-cols-2 gap-2 pt-1">
         {/* Button 1: Add to Cart (White Rounded Rectangle with Green Border & Cart Icon) */}
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-white text-xs sm:text-[13px] font-bold text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] hover:shadow-[0_4px_12px_rgba(0,94,35,0.15)] active:scale-[0.98]"
+          className="flex h-10 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-white px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] hover:shadow-[0_4px_12px_rgba(0,94,35,0.15)] active:scale-[0.98]"
         >
           {added ? (
             <>
-              <Check size={15} strokeWidth={2.5} className="text-[#005E23]" />
-              <span>Added</span>
+              <Check size={14} strokeWidth={2.5} className="text-[#005E23]" />
+              <span className="truncate">Added</span>
             </>
           ) : (
             <>
-              <ShoppingCart size={15} strokeWidth={2.2} className="text-[#005E23]" />
-              <span>Add to Cart</span>
+              <ShoppingCart size={14} strokeWidth={2.2} className="text-[#005E23] shrink-0" />
+              <span className="truncate">Add to Cart</span>
             </>
           )}
         </button>
@@ -180,9 +180,9 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
         <button
           type="button"
           onClick={handleBuyNow}
-          className="flex h-11 w-full items-center justify-center rounded-xl border border-[#005E23] bg-[#005E23] text-xs sm:text-[13px] font-bold text-white shadow-[0_4px_14px_rgba(0,94,35,0.28)] transition-all duration-200 hover:bg-[#004719] hover:border-[#004719] hover:shadow-[0_6px_20px_rgba(0,94,35,0.38)] active:scale-[0.98]"
+          className="flex h-10 w-full items-center justify-center rounded-xl border border-[#005E23] bg-[#005E23] px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-white shadow-[0_4px_14px_rgba(0,94,35,0.28)] transition-all duration-200 hover:bg-[#004719] hover:border-[#004719] hover:shadow-[0_6px_20px_rgba(0,94,35,0.38)] active:scale-[0.98]"
         >
-          <span>Buy Now</span>
+          <span className="truncate">Buy Now</span>
         </button>
       </div>
     </div>

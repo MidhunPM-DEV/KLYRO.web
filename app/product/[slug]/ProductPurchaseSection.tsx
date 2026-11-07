@@ -92,11 +92,10 @@ export default function ProductPurchaseSection({ product }: { product: Product }
                 key={opt}
                 type="button"
                 onClick={() => setSelectedVariant(opt)}
-                className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${
-                  selectedVariant === opt
-                    ? "bg-[#005E23] text-white shadow-sm ring-2 ring-[#005E23]/20"
-                    : "border border-[#E8ECE6] bg-white text-[#151515] hover:border-[#005E23]"
-                }`}
+                className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${selectedVariant === opt
+                  ? "bg-[#005E23] text-white shadow-sm ring-2 ring-[#005E23]/20"
+                  : "border border-[#E8ECE6] bg-white text-[#151515] hover:border-[#005E23]"
+                  }`}
               >
                 {opt}
               </button>
@@ -136,11 +135,10 @@ export default function ProductPurchaseSection({ product }: { product: Product }
         <button
           type="button"
           onClick={handleAddToCart}
-          className={`flex w-full items-center justify-center gap-2 rounded-full py-4 text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md active:scale-98 ${
-            added
-              ? "bg-[#003D16] text-white"
-              : "bg-[#005E23] text-white hover:bg-[#004719]"
-          }`}
+          className={`flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#005E23] py-3.5 px-4 text-xs font-bold tracking-wide transition-all duration-200 shadow-sm active:scale-98 ${added
+            ? "bg-[#005E23] text-white"
+            : "bg-white text-[#005E23] hover:bg-[#F2F7F4]"
+            }`}
         >
           {added ? (
             <>
@@ -158,9 +156,9 @@ export default function ProductPurchaseSection({ product }: { product: Product }
         <button
           type="button"
           onClick={handleWhatsAppOrder}
-          className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-[#25D366] bg-[#25D366] py-3.5 text-xs font-bold uppercase tracking-wider text-white transition-all duration-200 shadow-sm hover:bg-[#20ba5a] active:scale-98"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#25D366] bg-[#25D366] py-3.5 px-4 text-xs font-bold tracking-wide text-white transition-all duration-200 shadow-sm hover:bg-[#20ba5a] active:scale-98"
         >
-          <MessageCircle size={18} />
+          <MessageCircle size={17} />
           <span>Quick Order via WhatsApp</span>
         </button>
       </div>
