@@ -1,161 +1,163 @@
 require('dotenv').config();
-const http = require('http');
-const url = require('url');
+const express = require('express');
+const cors = require('cors');
 const connectDB = require('./config/db');
 const siteConfig = require('./config/siteConfig');
-const productsController = require('./controllers/productsController');
-const ordersController = require('./controllers/ordersController');
-const newsletterController = require('./controllers/newsletterController');
-const inquiriesController = require('./controllers/inquiriesController');
 
+const productsController = require('./controllers/productsController');
+const ordersController   = require('./controllers/ordersController');
+const newsletterController = require('./controllers/newsletterController');
+const inquiriesController  = require('./controllers/inquiriesController');
+
+const app = express();
 const PORT = process.env.PORT || siteConfig.port || 5001;
 
-function sendJson(res, statusCode, data) {
-  res.writeHead(statusCode, {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+// ── Middleware ────────────────────────────────────────────────
+app.use(cors());
+app.use(express.json());
+
+// ── Health ────────────────────────────────────────────────────
+app.get(['/','  /api/health'], (req, res) => {
+  res.json({
+    status: 'online',
+    db: 'mongodb',
+    name: siteConfig.name,
+    port: PORT,
+    timestamp: new Date().toISOString(),
   });
-  res.end(JSON.stringify(data, null, 2));
-}
-
-function parseBody(req) {
-  return new Promise((resolve) => {
-    let body = '';
-    req.on('data', (chunk) => { body += chunk.toString(); });
-    req.on('end', () => {
-      if (!body) return resolve({});
-      try { resolve(JSON.parse(body)); } catch { resolve({}); }
-    });
-  });
-}
-
-const server = http.createServer(async (req, res) => {
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PATCH, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    });
-    return res.end();
-  }
-
-  const parsedUrl = url.parse(req.url, true);
-  const pathname = parsedUrl.pathname;
-  const query = parsedUrl.query;
-  const method = req.method;
-
-  try {
-    // Health
-    if (pathname === '/' || pathname === '/api/health') {
-      return sendJson(res, 200, {
-        status: 'online',
-        db: 'mongodb',
-        name: siteConfig.name,
-        port: PORT,
-        timestamp: new Date().toISOString(),
-      });
-    }
-
-    // ── PRODUCTS ─────────────────────────────────────────
-    if (pathname === '/api/products' && method === 'GET') {
-      return sendJson(res, 200, await productsController.getProducts(query));
-    }
-    if (pathname === '/api/products' && method === 'POST') {
-      const body = await parseBody(req);
-      return sendJson(res, 200, await productsController.addProduct(body));
-    }
-    if (pathname.startsWith('/api/products/') && method === 'GET') {
-      const slug = pathname.replace('/api/products/', '');
-      const data = await productsController.getProductBySlug(slug);
-      return sendJson(res, data.status || 200, data);
-    }
-    if (pathname.startsWith('/api/products/') && method === 'DELETE') {
-      const id = pathname.replace('/api/products/', '');
-      const data = await productsController.deleteProduct(id);
-      return sendJson(res, data.status || 200, data);
-    }
-    if (pathname.startsWith('/api/products/') && method === 'PATCH') {
-      const id = pathname.replace('/api/products/', '');
-      const body = await parseBody(req);
-      const data = await productsController.updateProduct(id, body);
-      return sendJson(res, data.status || 200, data);
-    }
-
-    // ── CATEGORIES ───────────────────────────────────────
-    if (pathname === '/api/categories' && method === 'GET') {
-      return sendJson(res, 200, await productsController.getCategories());
-    }
-
-    // ── ORDERS ───────────────────────────────────────────
-    if (pathname === '/api/orders' && method === 'GET') {
-      return sendJson(res, 200, await ordersController.getAllOrders());
-    }
-    if (pathname === '/api/orders' && method === 'POST') {
-      const body = await parseBody(req);
-      const data = await ordersController.createOrder(body);
-      return sendJson(res, data.status || 200, data);
-    }
-    if (pathname.startsWith('/api/orders/') && method === 'GET') {
-      const id = pathname.replace('/api/orders/', '');
-      const data = await ordersController.getOrderById(id);
-      return sendJson(res, data.status || 200, data);
-    }
-    if (pathname.startsWith('/api/orders/') && method === 'PATCH') {
-      const id = pathname.replace('/api/orders/', '');
-      const body = await parseBody(req);
-      const data = await ordersController.updateOrderStatus(id, body.status, body.message);
-      return sendJson(res, data.status || 200, data);
-    }
-
-    // ── ORDER TRACKING ───────────────────────────────────
-    if (pathname === '/api/track' && method === 'GET') {
-      if (!query.query) return sendJson(res, 400, { success: false, error: 'Query parameter required' });
-      const data = await ordersController.trackOrder(query.query);
-      return sendJson(res, data.status || 200, data);
-    }
-
-    // ── NEWSLETTER ───────────────────────────────────────
-    if (pathname === '/api/newsletter' && method === 'POST') {
-      const body = await parseBody(req);
-      const data = await newsletterController.subscribe(body.email);
-      return sendJson(res, data.status || 200, data);
-    }
-    if (pathname === '/api/subscribers' && method === 'GET') {
-      return sendJson(res, 200, await newsletterController.getAllSubscribers());
-    }
-
-    // ── INQUIRIES ────────────────────────────────────────
-    if (pathname === '/api/inquiries' && method === 'GET') {
-      return sendJson(res, 200, await inquiriesController.getAllInquiries());
-    }
-    if (pathname === '/api/inquiries' && method === 'POST') {
-      const body = await parseBody(req);
-      const data = await inquiriesController.createInquiry(body);
-      return sendJson(res, data.status || 200, data);
-    }
-
-    // 404
-    return sendJson(res, 404, {
-      success: false,
-      error: `Endpoint '${method} ${pathname}' not found`,
-    });
-
-  } catch (err) {
-    console.error('Server Error:', err);
-    return sendJson(res, 500, { success: false, error: 'Internal Server Error', details: err.message });
-  }
 });
 
-// Connect DB then start server
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'online',
+    db: 'mongodb',
+    name: siteConfig.name,
+    port: PORT,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// ── Products ──────────────────────────────────────────────────
+app.get('/api/products', async (req, res) => {
+  try {
+    res.json(await productsController.getProducts(req.query));
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.post('/api/products', async (req, res) => {
+  try {
+    const data = await productsController.addProduct(req.body);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.get('/api/products/:id', async (req, res) => {
+  try {
+    const data = await productsController.getProductBySlug(req.params.id);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.patch('/api/products/:id', async (req, res) => {
+  try {
+    const data = await productsController.updateProduct(req.params.id, req.body);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.delete('/api/products/:id', async (req, res) => {
+  try {
+    const data = await productsController.deleteProduct(req.params.id);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ── Categories ────────────────────────────────────────────────
+app.get('/api/categories', async (req, res) => {
+  try {
+    res.json(await productsController.getCategories());
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ── Orders ────────────────────────────────────────────────────
+app.get('/api/orders', async (req, res) => {
+  try {
+    res.json(await ordersController.getAllOrders());
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.post('/api/orders', async (req, res) => {
+  try {
+    const data = await ordersController.createOrder(req.body);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.get('/api/orders/:id', async (req, res) => {
+  try {
+    const data = await ordersController.getOrderById(req.params.id);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.patch('/api/orders/:id', async (req, res) => {
+  try {
+    const data = await ordersController.updateOrderStatus(req.params.id, req.body.status, req.body.message);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ── Order Tracking ────────────────────────────────────────────
+app.get('/api/track', async (req, res) => {
+  try {
+    if (!req.query.query) return res.status(400).json({ success: false, error: 'Query parameter required' });
+    const data = await ordersController.trackOrder(req.query.query);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ── Newsletter / Subscribers ──────────────────────────────────
+app.post('/api/newsletter', async (req, res) => {
+  try {
+    const data = await newsletterController.subscribe(req.body.email);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.get('/api/subscribers', async (req, res) => {
+  try {
+    res.json(await newsletterController.getAllSubscribers());
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ── Inquiries ─────────────────────────────────────────────────
+app.get('/api/inquiries', async (req, res) => {
+  try {
+    res.json(await inquiriesController.getAllInquiries());
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+app.post('/api/inquiries', async (req, res) => {
+  try {
+    const data = await inquiriesController.createInquiry(req.body);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
+// ── 404 Fallback ──────────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).json({ success: false, error: `Endpoint '${req.method} ${req.path}' not found` });
+});
+
+// ── Start ─────────────────────────────────────────────────────
 connectDB().then(() => {
-  server.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log(`===============================================`);
     console.log(` KLYRO Backend  →  http://localhost:${PORT}`);
     console.log(` Database       →  MongoDB Atlas (klyro)`);
+    console.log(` Framework      →  Express`);
     console.log(`===============================================`);
   });
 });
 
-module.exports = server;
+module.exports = app;
