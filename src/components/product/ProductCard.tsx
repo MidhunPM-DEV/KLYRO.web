@@ -161,7 +161,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
         <button
           type="button"
           onClick={handleAddToCart}
-          className="group/atc flex h-10 w-full items-center justify-center gap-1.5 rounded-xl border border-[#005E23] bg-white px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-[#005E23] transition-all duration-200 hover:bg-[#005E23] hover:text-white active:scale-[0.98]"
+          className="group/atc flex h-10 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-white px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-[#005E23] transition-all duration-200 hover:bg-[#005E23] hover:text-white active:scale-[0.98]"
         >
           {added ? (
             <>
