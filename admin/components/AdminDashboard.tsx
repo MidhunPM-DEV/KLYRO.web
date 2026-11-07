@@ -27,7 +27,7 @@ export interface Subscriber {
   subscribedAt: string;
 }
 
-// Safe fetch — never throws even if backend is offline or returns non-JSON
+// Safe fetch — never crashes even if backend is offline or returns non-JSON
 async function safeFetch(url: string, options?: RequestInit) {
   try {
     const res = await fetch(url, options);
@@ -117,7 +117,10 @@ export default function AdminDashboard() {
           <div className="bg-amber-50 border-b border-amber-200 px-6 py-2.5 flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-amber-400 shrink-0" />
             <p className="text-xs font-semibold text-amber-700">
-              Backend offline — start it with: <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono">cd backend && node server.js</code>
+              Backend offline — run:{' '}
+              <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono">
+                cd backend &amp;&amp; node server.js
+              </code>
             </p>
           </div>
         )}
@@ -147,146 +150,6 @@ export default function AdminDashboard() {
               )}
               {currentTab === 'products' && (
                 <ProductsTab products={products} onProductsChange={setProducts} />
-              )}
-              {currentTab === 'inquiries' && (
-                <InquiriesTab inquiries={inquiries} />
-              )}
-              {currentTab === 'subscribers' && (
-                <SubscribersTab subscribers={subscribers} />
-              )}
-              {currentTab === 'settings' && (
-                <SettingsTab />
-              )}
-            </>
-          )}
-        </main>
-      </div>
-    </div>
-  );
-}
-
-export interface Inquiry {
-  id: string;
-  name: string;
-  phone: string;
-  email?: string;
-  message: string;
-  type: string;
-  createdAt: string;
-}
-
-export interface Subscriber {
-  email: string;
-  subscribedAt: string;
-}
-
-export default function AdminDashboard() {
-  const [currentTab, setCurrentTab] = useState('dashboard');
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
-  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const fetchOrders = async () => {
-    try {
-      const res = await fetch('/api/orders');
-      const data = await res.json();
-      if (res.ok && data.success) setOrders(data.orders);
-    } catch (e) { console.error(e); }
-  };
-
-  // Fetch products from backend (reflects add/delete)
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch('/api/products?limit=200');
-      const data = await res.json();
-      if (res.ok && data.success) setProducts(data.products);
-    } catch (e) { console.error(e); }
-  };
-
-  const fetchInquiries = async () => {
-    try {
-      const res = await fetch('/api/inquiries');
-      const data = await res.json();
-      if (res.ok && data.success) setInquiries(data.inquiries);
-    } catch (e) { console.error(e); }
-  };
-
-  const fetchSubscribers = async () => {
-    try {
-      const res = await fetch('/api/subscribers');
-      const data = await res.json();
-      if (res.ok && data.success) setSubscribers(data.subscribers);
-    } catch (e) { console.error(e); }
-  };
-
-  const fetchAll = async () => {
-    await Promise.all([fetchOrders(), fetchProducts(), fetchInquiries(), fetchSubscribers()]);
-    setLoading(false);
-    setRefreshing(false);
-  };
-
-  useEffect(() => { fetchAll(); }, []);
-
-  const handleRefresh = () => { setRefreshing(true); fetchAll(); };
-
-  const handleStatusUpdate = async (orderId: string, newStatus: OrderStatus, note?: string) => {
-    try {
-      const res = await fetch(`/api/orders/${orderId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus, message: note }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        setOrders((prev) => prev.map((o) => (o.id === orderId ? data.order : o)));
-      }
-    } catch (err) { console.error(err); }
-  };
-
-  const pendingCount = orders.filter((o) => o.status === 'placed').length;
-
-  return (
-    <div className="flex min-h-screen bg-[#F7F8F6]">
-      <AdminSidebar
-        currentTab={currentTab}
-        setCurrentTab={setCurrentTab}
-        pendingCount={pendingCount}
-      />
-
-      <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader refreshing={refreshing} onRefresh={handleRefresh} />
-
-        <main className="flex-1 p-6 overflow-y-auto">
-          {loading ? (
-            <div className="flex items-center justify-center py-32">
-              <div className="flex flex-col items-center gap-3">
-                <div className="h-10 w-10 rounded-full border-4 border-[#005E23] border-t-transparent animate-spin" />
-                <p className="text-sm font-semibold text-[#777777]">Loading workspace...</p>
-              </div>
-            </div>
-          ) : (
-            <>
-              {currentTab === 'dashboard' && (
-                <DashboardHome
-                  orders={orders}
-                  products={products}
-                  inquiriesCount={inquiries.length}
-                  subscribersCount={subscribers.length}
-                  onTabChange={setCurrentTab}
-                  onStatusUpdate={handleStatusUpdate}
-                />
-              )}
-              {currentTab === 'orders' && (
-                <OrdersTab orders={orders} onStatusUpdate={handleStatusUpdate} />
-              )}
-              {currentTab === 'products' && (
-                <ProductsTab
-                  products={products}
-                  onProductsChange={setProducts}
-                />
               )}
               {currentTab === 'inquiries' && (
                 <InquiriesTab inquiries={inquiries} />
