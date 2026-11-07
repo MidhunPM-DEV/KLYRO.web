@@ -30,22 +30,6 @@ export default function NewArrivalsPage() {
     <div className="min-h-screen bg-[#F7F8F6] text-[#151515]">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#005E23] via-[#007A2E] to-[#005E23] text-white py-20">
-        <div className="container mx-auto px-6 max-w-6xl text-center">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Sparkles size={32} className="text-[#4ade80]" />
-            <h1 className="text-4xl md:text-5xl font-black">
-              New Arrivals
-            </h1>
-            <Sparkles size={32} className="text-[#4ade80]" />
-          </div>
-          <p className="text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto">
-            Discover our latest collection of smart home, kitchen, and nursery essentials
-          </p>
-        </div>
-      </section>
-
       {/* Products Section */}
       <section className="container mx-auto px-6 py-16 max-w-7xl">
         
@@ -89,14 +73,7 @@ export default function NewArrivalsPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {newArrivals.map((product) => (
-              <div key={product.id} className="relative">
-                {/* New Badge */}
-                <div className="absolute top-4 left-4 z-10 bg-gradient-to-r from-[#005E23] to-[#007A2E] text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg flex items-center gap-1">
-                  <Sparkles size={12} />
-                  New
-                </div>
-                <ProductCard product={product} />
-              </div>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         )}
