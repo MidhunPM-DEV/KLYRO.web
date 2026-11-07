@@ -1,4 +1,3 @@
-import AnnouncementBar from "@/src/components/layout/AnnouncementBar";
 import Navbar from "@/src/components/layout/Navbar";
 import Footer from "@/src/components/layout/Footer";
 
@@ -10,7 +9,6 @@ export const metadata = {
 export default function RefundPolicyPage() {
   return (
     <main className="min-h-screen bg-white">
-      <AnnouncementBar />
       <Navbar />
 
       {/* Hero */}

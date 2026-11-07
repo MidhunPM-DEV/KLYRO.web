@@ -4,7 +4,6 @@ import { Suspense, useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, ArrowUpDown } from "lucide-react";
-import AnnouncementBar from "@/src/components/layout/AnnouncementBar";
 import Navbar from "@/src/components/layout/Navbar";
 import Footer from "@/src/components/layout/Footer";
 import ProductCard from "@/src/components/product/ProductCard";
@@ -172,7 +171,6 @@ function ShopContent() {
 export default function ShopPage() {
   return (
     <main className="min-h-screen bg-white">
-      <AnnouncementBar />
       <Navbar />
       <Suspense fallback={<div className="p-12 text-center text-sm font-semibold text-[#777777]">Loading catalog...</div>}>
         <ShopContent />
