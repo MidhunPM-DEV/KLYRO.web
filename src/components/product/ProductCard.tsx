@@ -161,7 +161,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex h-10 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-white px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] hover:shadow-[0_4px_12px_rgba(0,94,35,0.15)] active:scale-[0.98]"
+          className="flex h-10 w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#005E23] bg-white px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] hover:shadow-[0_4px_12px_rgba(0,94,35,0.15)] active:scale-[0.98]"
         >
           {added ? (
             <>
@@ -180,7 +180,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
         <button
           type="button"
           onClick={handleBuyNow}
-          className="flex h-10 w-full items-center justify-center rounded-xl border border-[#005E23] bg-[#005E23] px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-white shadow-[0_4px_14px_rgba(0,94,35,0.28)] transition-all duration-200 hover:bg-[#004719] hover:border-[#004719] hover:shadow-[0_6px_20px_rgba(0,94,35,0.38)] active:scale-[0.98]"
+          className="flex h-10 w-full items-center justify-center rounded-full border border-[#005E23] bg-[#005E23] px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-white shadow-[0_4px_14px_rgba(0,94,35,0.28)] transition-all duration-200 hover:bg-[#004719] hover:border-[#004719] hover:shadow-[0_6px_20px_rgba(0,94,35,0.38)] active:scale-[0.98]"
         >
           <span className="truncate">Buy Now</span>
         </button>
