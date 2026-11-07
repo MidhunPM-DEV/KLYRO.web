@@ -13,63 +13,61 @@ export default function HeroSection() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_1.15fr] lg:gap-14">
-          
-          {/* Left Column: Volitx-inspired Typography & CTAs */}
-          <div className="max-w-2xl">
-            {/* Eyebrow with accent line */}
-            <div className="flex items-center gap-2.5">
-              <span className="h-[2px] w-6 bg-[#005E23]" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#005E23]">
-                Smart Living. Better Choices.
+
+          {/* Left Column: Refined Typography & CTAs */}
+          <div className="max-w-xl">
+            {/* Eyebrow badge */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#005E23]/15 bg-[#005E23]/[0.05] px-3.5 py-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#005E23] animate-pulse" />
+              <span className="text-[11px] font-semibold tracking-wider uppercase text-[#005E23]">
+                Smart Living • Better Choices
               </span>
             </div>
 
-            {/* Massive Display Headline */}
-            <h1 className="mt-5 text-5xl font-black tracking-[-0.04em] text-[#151515] sm:text-6xl lg:text-[70px] leading-[1.04]">
-              Upgrade With
-              <span className="block text-[#005E23] mt-1 sm:mt-2">
-                Smarter Choices.
+            {/* Clean & Neat Headline */}
+            <h1 className="mt-4 text-2xl sm:text-4xl lg:text-[44px] xl:text-[48px] font-bold tracking-[-0.03em] text-[#151515] leading-[1.16]">
+              Everyday Essentials,{" "}
+              <span className="block text-[#005E23]">
+                Made Smarter.
               </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="mt-6 text-base text-[#777777] sm:text-lg leading-relaxed max-w-lg">
-              Discover thoughtfully selected smart home, kitchen, and everyday essentials designed to simplify your daily routine with uncompromising quality.
+            {/* Neat Subtitle */}
+            <p className="mt-4 text-sm sm:text-[15px] leading-relaxed text-[#666666] max-w-lg font-normal">
+              Thoughtfully selected smart electronics, cordless kitchen tools, and daily lifestyle essentials designed to simplify your everyday routine with lasting quality.
             </p>
 
-            {/* CTAs */}
-            <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-5">
+            {/* Clean Action Buttons */}
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-2.5 rounded-full bg-[#005E23] px-8 py-4 text-xs font-bold uppercase tracking-wider text-white shadow-[0_4px_14px_rgba(0,94,35,0.25)] transition-all duration-200 hover:bg-[#004719] hover:shadow-[0_6px_20px_rgba(0,94,35,0.35)] active:scale-95"
+                className="inline-flex h-11 items-center gap-2 rounded-full bg-[#005E23] px-6 text-xs font-semibold uppercase tracking-wider text-white shadow-sm transition-all duration-200 hover:bg-[#004719] hover:shadow-md active:scale-95"
               >
                 <span>Shop Collection</span>
-                <ArrowRight size={15} />
+                <ArrowRight size={14} />
               </Link>
 
               <Link
                 href="#categories"
-                className="group inline-flex items-center gap-1.5 py-3 text-xs font-bold uppercase tracking-wider text-[#151515] transition-colors hover:text-[#005E23]"
+                className="inline-flex h-11 items-center gap-1.5 rounded-full border border-[#E8ECE6] bg-white px-5 text-xs font-semibold uppercase tracking-wider text-[#151515] transition-all duration-200 hover:border-[#005E23]/30 hover:bg-[#F7F8F6] hover:text-[#005E23]"
               >
-                <span className="border-b-2 border-[#151515] group-hover:border-[#005E23] pb-0.5 transition-colors">
-                  Explore Categories
-                </span>
-                <ArrowUpRight size={15} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span>Explore Categories</span>
+                <ArrowUpRight size={14} />
               </Link>
             </div>
 
-            {/* Trust Highlights Pill (Directly matching Volitx reference) */}
-            <div className="mt-12 inline-flex flex-wrap items-center gap-x-5 gap-y-2 rounded-full border border-[#E8ECE6] bg-[#F7F8F6] px-5 py-3 text-[11px] font-semibold text-[#555555] shadow-[0_2px_8px_rgba(0,0,0,0.03)] sm:px-6">
+            {/* Trust Highlights Pill */}
+            <div className="mt-8 inline-flex flex-wrap items-center gap-x-4 gap-y-2 rounded-full border border-[#E8ECE6] bg-[#F7F8F6]/80 px-4 py-2 text-[11px] font-medium text-[#555555]">
               <div className="flex items-center gap-1.5 text-[#151515]">
                 <Zap size={13} className="text-[#005E23]" />
                 <span>Latest Technology</span>
               </div>
-              <span className="text-[#CCCCCC]">•</span>
+              <span className="text-[#D1D5DB]">•</span>
               <div className="flex items-center gap-1.5 text-[#151515]">
                 <Truck size={13} className="text-[#005E23]" />
                 <span>Fast & Secure Delivery</span>
               </div>
-              <span className="text-[#CCCCCC]">•</span>
+              <span className="text-[#D1D5DB]">•</span>
               <div className="flex items-center gap-1.5 text-[#151515]">
                 <ShieldCheck size={13} className="text-[#005E23]" />
                 <span>Premium Quality</span>
@@ -81,7 +79,7 @@ export default function HeroSection() {
           <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
             {/* Main Stage Backdrop with subtle gradient card */}
             <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden rounded-[32px] border border-[#E8ECE6] bg-gradient-to-br from-[#F7F8F6] to-[#ECEFEA] p-4 sm:p-7 shadow-[0_20px_50px_rgba(0,0,0,0.06)]">
-              
+
               {/* Product 1: Portable Mini Blender (Primary Focal Image) */}
               <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white shadow-md">
                 <Image
