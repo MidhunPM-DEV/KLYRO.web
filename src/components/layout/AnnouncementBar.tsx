@@ -41,9 +41,14 @@ export default function AnnouncementBar() {
             <MapPin size={12} />
             Track Order
           </Link>
-          <Link href="#why-klyro" className="hidden items-center gap-1 transition-colors hover:text-white lg:inline-flex">
-            <ShieldCheck size={12} />
-            Verified Quality
+          <span className="hidden h-3 w-px bg-white/20 sm:inline-block" />
+          <Link
+            href="/admin"
+            className="flex items-center gap-1 font-semibold text-white/80 transition-colors hover:text-white"
+            title="Open Admin Portal"
+          >
+            <ShieldCheck size={12} className="text-[#4ade80]" />
+            <span>Admin</span>
           </Link>
         </div>
       </div>

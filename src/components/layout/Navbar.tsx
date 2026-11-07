@@ -211,6 +211,13 @@ export default function Navbar() {
             >
               New Arrivals
             </Link>
+            <Link
+              href="/admin"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-base font-semibold text-[#005E23] hover:underline"
+            >
+              Admin Portal
+            </Link>
 
             <div className="pt-4 border-t border-[#E8ECE6]">
               <a
