@@ -1,12 +1,24 @@
 'use client';
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { getBestSellers } from "@/src/data/products";
 import ProductCard from "@/src/components/product/ProductCard";
+import { Product } from "@/src/types";
 
 export default function BestSellersSection() {
-  const bestSellers = getBestSellers();
+  const [bestSellers, setBestSellers] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetch('/api/products?sort=bestseller&limit=8')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.success) {
+          setBestSellers(data.products.filter((p: Product) => p.isBestSeller).slice(0, 4));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <section id="best-sellers" className="bg-[#F7F8F6] py-16 sm:py-24 border-t border-[#E8ECE6]">

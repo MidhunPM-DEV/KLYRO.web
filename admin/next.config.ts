@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "www.klyroo.online" },
     ],
   },
+  // Proxy all /api/* calls to the backend server
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://localhost:5001/api/:path*',
+      },
+    ];
+  },
   turbopack: {
     root: path.resolve(__dirname, ".."),
     rules: {

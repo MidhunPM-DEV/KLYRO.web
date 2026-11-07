@@ -48,8 +48,17 @@
         "status": "shipped",
         "timestamp": "2026-11-07T04:20:00.000Z",
         "message": "Dispatched via Express Courier. Tracking AWB: #BLR-98214"
+      },
+      {
+        "status": "confirmed",
+        "timestamp": "2026-11-07T19:06:03.669Z",
+        "message": "Status updated to confirmed"
+      },
+      {
+        "status": "shipped",
+        "timestamp": "2026-11-07T19:06:10.971Z",
+        "message": "Status updated to shipped"
       }
     ]
   }
 ]
-

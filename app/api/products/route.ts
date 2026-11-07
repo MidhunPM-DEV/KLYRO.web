@@ -1,75 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { products } from '@/src/data/products';
+
+const BACKEND = 'http://localhost:5001';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category');
-    const search = searchParams.get('search');
-    const sort = searchParams.get('sort');
-    const limit = searchParams.get('limit');
-
-    let result = [...products];
-
-    // Filter by Category
-    if (category && category !== 'all') {
-      result = result.filter(
-        (p) => p.categorySlug.toLowerCase() === category.toLowerCase()
-      );
-    }
-
-    // Search
-    if (search && search.trim()) {
-      const q = search.toLowerCase().trim();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q)
-      );
-    }
-
-    // Sort
-    if (sort) {
-      switch (sort) {
-        case 'price-asc':
-          result.sort((a, b) => a.price - b.price);
-          break;
-        case 'price-desc':
-          result.sort((a, b) => b.price - a.price);
-          break;
-        case 'discount':
-          result.sort((a, b) => b.discount - a.discount);
-          break;
-        case 'bestseller':
-          result.sort((a, b) => (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0));
-          break;
-        case 'rating':
-          result.sort((a, b) => b.rating - a.rating);
-          break;
-        default:
-          break;
-      }
-    }
-
-    // Limit
-    if (limit) {
-      const parsedLimit = parseInt(limit, 10);
-      if (!isNaN(parsedLimit) && parsedLimit > 0) {
-        result = result.slice(0, parsedLimit);
-      }
-    }
-
-    return NextResponse.json({
-      success: true,
-      total: result.length,
-      products: result,
+    const qs = searchParams.toString();
+    const res = await fetch(`${BACKEND}/api/products${qs ? `?${qs}` : ''}`, {
+      cache: 'no-store',
     });
-  } catch (error: any) {
-    return NextResponse.json(
-      { success: false, error: error.message || 'Failed to fetch products' },
-      { status: 500 }
-    );
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
+  } catch {
+    // Fallback to static data if backend is offline
+    const { products } = await import('@/src/data/products');
+    const { searchParams } = new URL(request.url);
+    let result = [...products];
+    const category = searchParams.get('category');
+    const limit = searchParams.get('limit');
+    if (category && category !== 'all') {
+      result = result.filter((p) => p.categorySlug === category);
+    }
+    if (limit) {
+      const l = parseInt(limit, 10);
+      if (!isNaN(l)) result = result.slice(0, l);
+    }
+    return NextResponse.json({ success: true, total: result.length, products: result });
   }
 }
 
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const res = await fetch(`${BACKEND}/api/products`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
+  } catch (e: any) {
+    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+  }
+}

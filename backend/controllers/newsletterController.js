@@ -3,6 +3,15 @@ const fs = require('fs');
 
 const file = path.join(__dirname, '..', 'data', 'subscribers.json');
 
+exports.getAllSubscribers = () => {
+  if (!fs.existsSync(file)) {
+    fs.writeFileSync(file, JSON.stringify([], null, 2));
+    return { success: true, total: 0, subscribers: [] };
+  }
+  const list = JSON.parse(fs.readFileSync(file, 'utf8'));
+  return { success: true, total: list.length, subscribers: list };
+};
+
 exports.subscribe = (email) => {
   if (!email || !email.includes('@') || !email.includes('.')) {
     return { success: false, status: 400, error: 'Valid email address required' };
@@ -24,4 +33,3 @@ exports.subscribe = (email) => {
 
   return { success: true, message: 'Thank you for subscribing to KLYRO updates!' };
 };
-

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X, MessageCircle, Star, ShieldCheck, Truck } from "lucide-react";
+import { X, MessageCircle, Star, ShieldCheck, Truck, Check } from "lucide-react";
 import { useCart } from "@/src/context/CartContext";
 import AddToCartButton from "@/src/components/buttons/AddToCartButton";
 import BuyNowButton from "@/src/components/buttons/BuyNowButton";

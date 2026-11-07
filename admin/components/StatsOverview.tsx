@@ -1,14 +1,16 @@
 'use client';
 
-import { DollarSign, ShoppingBag, Clock, TrendingUp, Package } from 'lucide-react';
+import { DollarSign, ShoppingBag, Clock, TrendingUp, Package, MessageSquare, Mail } from 'lucide-react';
 import { Order } from '@/src/lib/db';
 
 interface StatsProps {
   orders: Order[];
   totalProductsCount: number;
+  inquiriesCount: number;
+  subscribersCount: number;
 }
 
-export default function StatsOverview({ orders, totalProductsCount }: StatsProps) {
+export default function StatsOverview({ orders, totalProductsCount, inquiriesCount, subscribersCount }: StatsProps) {
   const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
   const pendingOrders = orders.filter((o) => o.status === 'placed').length;
   const avgOrderValue = orders.length > 0 ? Math.round(totalRevenue / orders.length) : 0;
@@ -31,14 +33,14 @@ export default function StatsOverview({ orders, totalProductsCount }: StatsProps
       color: 'text-blue-600 bg-blue-50',
     },
     {
-      title: 'Pending WhatsApp',
+      title: 'Pending Confirmation',
       value: pendingOrders.toString(),
-      subtitle: 'Awaiting support confirmation',
+      subtitle: 'Awaiting WhatsApp confirm',
       icon: Clock,
       color: 'text-amber-600 bg-amber-50',
     },
     {
-      title: 'Average Order Value',
+      title: 'Avg. Order Value',
       value: formatPrice(avgOrderValue),
       subtitle: 'Average per basket',
       icon: TrendingUp,
@@ -51,10 +53,24 @@ export default function StatsOverview({ orders, totalProductsCount }: StatsProps
       icon: Package,
       color: 'text-emerald-600 bg-emerald-50',
     },
+    {
+      title: 'Inquiries',
+      value: inquiriesCount.toString(),
+      subtitle: 'Customer support tickets',
+      icon: MessageSquare,
+      color: 'text-orange-600 bg-orange-50',
+    },
+    {
+      title: 'Subscribers',
+      value: subscribersCount.toString(),
+      subtitle: 'Newsletter signups',
+      icon: Mail,
+      color: 'text-pink-600 bg-pink-50',
+    },
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
       {cards.map((c, i) => {
         const Icon = c.icon;
         return (
@@ -63,16 +79,16 @@ export default function StatsOverview({ orders, totalProductsCount }: StatsProps
             className="rounded-2xl border border-[#E8ECE6] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex flex-col justify-between"
           >
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#777777]">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#777777] leading-tight">
                 {c.title}
               </span>
-              <div className={`flex h-8 w-8 items-center justify-center rounded-xl ${c.color}`}>
-                <Icon size={16} />
+              <div className={`flex h-8 w-8 items-center justify-center rounded-xl ${c.color} shrink-0`}>
+                <Icon size={15} />
               </div>
             </div>
             <div className="mt-4">
               <span className="text-2xl font-black text-[#151515]">{c.value}</span>
-              <p className="mt-1 text-[11px] text-[#777777]">{c.subtitle}</p>
+              <p className="mt-1 text-[10px] text-[#777777] leading-tight">{c.subtitle}</p>
             </div>
           </div>
         );
@@ -80,4 +96,3 @@ export default function StatsOverview({ orders, totalProductsCount }: StatsProps
     </div>
   );
 }
-

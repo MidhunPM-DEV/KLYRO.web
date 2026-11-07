@@ -3,6 +3,15 @@ const fs = require('fs');
 
 const file = path.join(__dirname, '..', 'data', 'inquiries.json');
 
+exports.getAllInquiries = () => {
+  if (!fs.existsSync(file)) {
+    fs.writeFileSync(file, JSON.stringify([], null, 2));
+    return { success: true, total: 0, inquiries: [] };
+  }
+  const list = JSON.parse(fs.readFileSync(file, 'utf8'));
+  return { success: true, total: list.length, inquiries: list };
+};
+
 exports.createInquiry = (body) => {
   const { name, phone, email, message, type } = body;
 

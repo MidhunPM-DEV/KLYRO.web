@@ -1,121 +1,126 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { LayoutDashboard, ShoppingBag, Package, MessageSquare, Users, Settings, ExternalLink, LogOut } from 'lucide-react';
+import {
+  LayoutDashboard, ShoppingBag, Package, MessageSquare, Users,
+  Settings, HelpCircle, LogOut, ExternalLink,
+} from 'lucide-react';
 
-interface SidebarProps {
+interface Props {
   currentTab: string;
-  setCurrentTab: (tab: string) => void;
-  pendingOrdersCount?: number;
+  setCurrentTab: (t: string) => void;
+  pendingCount: number;
 }
 
-export default function AdminSidebar({
-  currentTab,
-  setCurrentTab,
-  pendingOrdersCount = 0,
-}: SidebarProps) {
+const menuItems = [
+  { id: 'dashboard',   label: 'Dashboard',   icon: LayoutDashboard },
+  { id: 'orders',      label: 'Orders',      icon: ShoppingBag,    badge: true },
+  { id: 'products',    label: 'Products',    icon: Package },
+  { id: 'inquiries',   label: 'Inquiries',   icon: MessageSquare },
+  { id: 'subscribers', label: 'Subscribers', icon: Users },
+];
+
+const generalItems = [
+  { id: 'settings', label: 'Settings', icon: Settings },
+  { id: 'help',     label: 'Help',     icon: HelpCircle },
+];
+
+export default function AdminSidebar({ currentTab, setCurrentTab, pendingCount }: Props) {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Clear auth from localStorage
     localStorage.removeItem('adminAuth');
     localStorage.removeItem('adminUser');
-    
-    // Redirect to login page
     router.push('/login');
   };
 
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'orders', label: 'Orders', icon: ShoppingBag, badge: pendingOrdersCount > 0 ? pendingOrdersCount : undefined },
-    { id: 'products', label: 'Products & Inventory', icon: Package },
-    { id: 'inquiries', label: 'Customer Inquiries', icon: MessageSquare },
-    { id: 'subscribers', label: 'Subscribers', icon: Users },
-    { id: 'settings', label: 'Store Settings', icon: Settings },
-  ];
+  const NavItem = ({
+    id, label, icon: Icon, badge,
+  }: { id: string; label: string; icon: React.ElementType; badge?: boolean }) => {
+    const active = currentTab === id;
+    return (
+      <button
+        type="button"
+        onClick={() => setCurrentTab(id)}
+        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+          active
+            ? 'bg-[#005E23] text-white shadow-sm'
+            : 'text-[#555555] hover:bg-[#F0F2EE] hover:text-[#151515]'
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <Icon size={17} />
+          <span>{label}</span>
+        </div>
+        {badge && pendingCount > 0 && (
+          <span className={`rounded-full px-2 py-0.5 text-[10px] font-black ${
+            active ? 'bg-white/20 text-white' : 'bg-[#005E23] text-white'
+          }`}>
+            {pendingCount}
+          </span>
+        )}
+      </button>
+    );
+  };
 
   return (
-    <aside className="w-64 bg-[#151515] text-white flex flex-col justify-between shrink-0 min-h-screen border-r border-[#262626]">
-      <div>
-        {/* Logo Banner */}
-        <div className="px-6 py-6 border-b border-[#262626] flex items-center justify-between">
-          <Link href="/admin" className="flex items-center gap-2">
-            <span className="text-xl font-black tracking-tight text-white">KLYRO</span>
-            <span className="rounded-md bg-[#005E23] px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-              Admin
-            </span>
-          </Link>
-        </div>
-
-        {/* Navigation Menu */}
-        <div className="px-3 py-6 space-y-1">
-          <div className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#777777] mb-2">
-            Store Management
+    <aside className="w-56 shrink-0 min-h-screen bg-white border-r border-[#EBEBEB] flex flex-col">
+      {/* Logo */}
+      <div className="px-5 py-5 border-b border-[#EBEBEB]">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#005E23]">
+            <span className="text-sm font-black text-white">K</span>
           </div>
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = currentTab === item.id;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setCurrentTab(item.id)}
-                className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
-                  isActive
-                    ? 'bg-[#005E23] text-white shadow-sm'
-                    : 'text-[#A3A3A3] hover:bg-[#202020] hover:text-white'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Icon size={16} />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge !== undefined && (
-                  <span className="rounded-full bg-[#f59e0b] px-2 py-0.5 text-[10px] font-bold text-black">
-                    {item.badge}
-                  </span>
-                )}
-              </button>
-            );
-          })}
+          <span className="text-lg font-black text-[#151515] tracking-tight">KLYRO</span>
         </div>
       </div>
 
-      {/* Footer / Storefront Quick Link */}
-      <div className="p-4 border-t border-[#262626] space-y-2">
-        <Link
-          href="/"
-          target="_blank"
-          className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#202020] text-xs font-semibold text-[#A3A3A3] hover:text-white transition-colors"
-        >
-          <div className="flex items-center gap-2">
-            <ExternalLink size={14} />
-            <span>Open Storefront</span>
+      <div className="flex-1 px-3 py-5 space-y-6 overflow-y-auto">
+        {/* MENU section */}
+        <div>
+          <p className="px-3 mb-2 text-[10px] font-black uppercase tracking-widest text-[#AAAAAA]">
+            Menu
+          </p>
+          <div className="space-y-0.5">
+            {menuItems.map((item) => (
+              <NavItem key={item.id} {...item} />
+            ))}
           </div>
-          <span className="text-[10px] text-[#777777]">Live</span>
-        </Link>
+        </div>
 
-        <a
-          href="https://wa.me/919292674447"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-3.5 py-2 text-[11px] font-medium text-[#4ade80] hover:underline"
-        >
-          <span>WhatsApp Support Desk</span>
-        </a>
+        {/* GENERAL section */}
+        <div>
+          <p className="px-3 mb-2 text-[10px] font-black uppercase tracking-widest text-[#AAAAAA]">
+            General
+          </p>
+          <div className="space-y-0.5">
+            {generalItems.map((item) => (
+              <NavItem key={item.id} {...item} />
+            ))}
 
-        {/* Logout Button */}
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="w-full flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-xs font-semibold text-white transition-colors"
-        >
-          <LogOut size={14} />
-          <span>Logout</span>
-        </button>
+            {/* Storefront link */}
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#555555] hover:bg-[#F0F2EE] hover:text-[#151515] transition-all"
+            >
+              <ExternalLink size={17} />
+              <span>Storefront</span>
+            </a>
+
+            {/* Logout */}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#555555] hover:bg-red-50 hover:text-red-600 transition-all"
+            >
+              <LogOut size={17} />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
       </div>
     </aside>
   );
 }
-

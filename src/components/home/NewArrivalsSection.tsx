@@ -1,15 +1,23 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { getNewArrivals, products } from "@/src/data/products";
 import ProductCard from "@/src/components/product/ProductCard";
+import { Product } from "@/src/types";
 
 export default function NewArrivalsSection() {
   const [selectedFilter, setSelectedFilter] = useState("all");
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
 
-  const newArrivalsList = products.filter((p) => p.isNewArrival);
+  useEffect(() => {
+    fetch('/api/products?limit=100')
+      .then((r) => r.json())
+      .then((data) => { if (data.success) setAllProducts(data.products); })
+      .catch(() => {});
+  }, []);
+
+  const newArrivalsList = allProducts.filter((p) => p.isNewArrival);
 
   const filterOptions = [
     { label: "All Items", value: "all" },

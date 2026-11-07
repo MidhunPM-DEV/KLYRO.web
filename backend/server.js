@@ -6,7 +6,7 @@ const ordersController = require('./controllers/ordersController');
 const newsletterController = require('./controllers/newsletterController');
 const inquiriesController = require('./controllers/inquiriesController');
 
-const PORT = siteConfig.port || 5000;
+const PORT = siteConfig.port || 5001;
 
 function sendJson(res, statusCode, data) {
   res.writeHead(statusCode, {
@@ -69,6 +69,28 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, data);
     }
 
+    // Add product
+    if (pathname === '/api/products' && method === 'POST') {
+      const body = await parseBody(req);
+      const data = productsController.addProduct(body);
+      return sendJson(res, data.status || 200, data);
+    }
+
+    // Delete product: /api/products/:id
+    if (pathname.startsWith('/api/products/') && method === 'DELETE') {
+      const id = pathname.replace('/api/products/', '');
+      const data = productsController.deleteProduct(id);
+      return sendJson(res, data.status || 200, data);
+    }
+
+    // Update product: /api/products/:id
+    if (pathname.startsWith('/api/products/') && method === 'PATCH') {
+      const id = pathname.replace('/api/products/', '');
+      const body = await parseBody(req);
+      const data = productsController.updateProduct(id, body);
+      return sendJson(res, data.status || 200, data);
+    }
+
     // Single Product: /api/products/:slug
     if (pathname.startsWith('/api/products/') && method === 'GET') {
       const slug = pathname.replace('/api/products/', '');
@@ -117,14 +139,25 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, data.status || 200, data);
     }
 
-    // 5. Newsletter
+    // 5. Newsletter subscribe
     if (pathname === '/api/newsletter' && method === 'POST') {
       const body = await parseBody(req);
       const data = newsletterController.subscribe(body.email);
       return sendJson(res, data.status || 200, data);
     }
 
-    // 6. Inquiries
+    // 6. Subscribers list (Admin)
+    if (pathname === '/api/subscribers' && method === 'GET') {
+      const data = newsletterController.getAllSubscribers();
+      return sendJson(res, 200, data);
+    }
+
+    // 7. Inquiries list (Admin)
+    if (pathname === '/api/inquiries' && method === 'GET') {
+      const data = inquiriesController.getAllInquiries();
+      return sendJson(res, 200, data);
+    }
+
     if (pathname === '/api/inquiries' && method === 'POST') {
       const body = await parseBody(req);
       const data = inquiriesController.createInquiry(body);
@@ -155,4 +188,3 @@ server.listen(PORT, () => {
 });
 
 module.exports = server;
-
