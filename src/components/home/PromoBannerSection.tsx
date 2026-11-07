@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, MessageCircle, Sparkles, Tag } from "lucide-react";
+import { ArrowRight, MessageCircle, Tag } from "lucide-react";
 
 export default function PromoBannerSection() {
   return (
@@ -52,4 +52,3 @@ export default function PromoBannerSection() {
     </section>
   );
 }
-

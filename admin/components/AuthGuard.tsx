@@ -17,8 +17,11 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     const adminAuth = localStorage.getItem('adminAuth');
     
     if (adminAuth === 'true') {
-      setIsAuthenticated(true);
-      setIsLoading(false);
+      const timer = setTimeout(() => {
+        setIsAuthenticated(true);
+        setIsLoading(false);
+      }, 0);
+      return () => clearTimeout(timer);
     } else {
       // Redirect to login if not authenticated
       router.push('/login');

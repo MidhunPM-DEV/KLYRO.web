@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { X, CheckCircle2, MessageCircle, MapPin, Truck, RefreshCw, Clock } from 'lucide-react';
+import { X, MessageCircle, Clock } from 'lucide-react';
 import { Order, OrderStatus } from '@/src/lib/db';
 
 interface ModalProps {
@@ -220,4 +220,3 @@ export default function OrderDetailModal({ order, onClose, onStatusUpdate }: Mod
     </div>
   );
 }
-

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageCircle, MapPin, ShieldCheck, HelpCircle } from "lucide-react";
+import { MessageCircle, MapPin, ShieldCheck } from "lucide-react";
 import { siteConfig } from "@/src/data/products";
 
 export default function AnnouncementBar() {

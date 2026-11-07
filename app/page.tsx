@@ -1,4 +1,3 @@
-import AnnouncementBar from "@/src/components/layout/AnnouncementBar";
 import Navbar from "@/src/components/layout/Navbar";
 import HeroSection from "@/src/components/home/HeroSection";
 import CategorySection from "@/src/components/home/CategorySection";
@@ -13,10 +12,6 @@ import Footer from "@/src/components/layout/Footer";
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
-      {/* 1. Announcement Bar */}
-      <AnnouncementBar />
-
-      {/* 2. Main Navigation */}
       <Navbar />
 
       {/* 3. Premium Hero Section */}

@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Star, ShieldCheck, Truck, RefreshCw, CheckCircle2, MessageCircle } from "lucide-react";
-import AnnouncementBar from "@/src/components/layout/AnnouncementBar";
+import { ChevronRight, ShieldCheck, Truck, RefreshCw, CheckCircle2 } from "lucide-react";
 import Navbar from "@/src/components/layout/Navbar";
 import Footer from "@/src/components/layout/Footer";
 import ProductCard from "@/src/components/product/ProductCard";
@@ -31,11 +30,8 @@ export default async function ProductDetailPage({
     .filter((p) => p.id !== product.id)
     .slice(0, 4);
 
-  const formatPrice = (amount: number) => `₹${amount.toLocaleString('en-IN')}`;
-
   return (
     <main className="min-h-screen bg-white">
-      <AnnouncementBar />
       <Navbar />
 
       {/* Breadcrumb Navigation */}
@@ -60,7 +56,7 @@ export default async function ProductDetailPage({
           {/* Left Column (7 cols): Images & Specifications */}
           <div className="lg:col-span-7">
             {/* Main Image */}
-            <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden rounded-3xl border border-[#E8ECE6] bg-[#F7F8F6] shadow-sm">
+            <div className="relative aspect-square sm:aspect-4/3 w-full overflow-hidden rounded-3xl border border-[#E8ECE6] bg-[#F7F8F6] shadow-sm">
               <Image
                 src={product.images[0]}
                 alt={product.name}
@@ -179,4 +175,3 @@ export default async function ProductDetailPage({
     </main>
   );
 }
-

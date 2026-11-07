@@ -54,8 +54,6 @@ export default function AddToCartButton({
     ${className}
   `;
 
-  const formatPrice = (amount: number) => `₹${amount.toLocaleString('en-IN')}`;
-
   return (
     <button
       type="button"
@@ -74,7 +72,10 @@ export default function AddToCartButton({
       ) : (
         <>
           <ShoppingCart size={size === 'lg' ? 12 : 12} strokeWidth={2.2} className="shrink-0" />
-          <span className="min-w-0 text-center text-[#005E23]">Add to Cart</span>
+          <span className="min-w-0 whitespace-nowrap text-center text-[#005E23]">Add to Cart</span>
+          {showPrice && price > 0 && (
+            <span className="shrink-0">· {`₹${price.toLocaleString('en-IN')}`}</span>
+          )}
         </>
       )}
     </button>

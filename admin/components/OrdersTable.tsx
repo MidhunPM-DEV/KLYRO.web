@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Search, MessageCircle, Eye, ArrowUpDown, Filter } from 'lucide-react';
+import { Search, MessageCircle, Eye } from 'lucide-react';
 import { Order, OrderStatus } from '@/src/lib/db';
 import OrderDetailModal from './OrderDetailModal';
 
@@ -232,4 +232,3 @@ export default function OrdersTable({ orders, onStatusUpdate }: OrdersTableProps
     </div>
   );
 }
-

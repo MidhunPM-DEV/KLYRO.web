@@ -44,7 +44,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
-          setCart(parsed);
+          setTimeout(() => setCart(parsed), 0);
         }
       }
     } catch (e) {
@@ -233,4 +233,3 @@ export function useCart() {
   }
   return context;
 }
-

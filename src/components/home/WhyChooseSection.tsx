@@ -1,4 +1,4 @@
-import { ShieldCheck, MessageCircle, HeartHandshake, Truck, Check } from "lucide-react";
+import { ShieldCheck, MessageCircle, HeartHandshake, Truck } from "lucide-react";
 
 const reasons = [
   {
@@ -74,4 +74,3 @@ export default function WhyChooseSection() {
     </section>
   );
 }
-

@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Search, ShoppingBag } from "lucide-react";
+import { ChevronDown, Search, ShoppingBag } from "lucide-react";
 import MobileMenu from "./MobileMenu";
 import { useCart } from "@/src/context/CartContext";
+import { categories } from "@/src/data/products";
 
 const links = [
   { label: "Home", href: "/" },
@@ -40,6 +41,23 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          <details className="group relative">
+            <summary className="flex cursor-pointer list-none items-center gap-1 text-[13px] font-medium text-[#454545] transition-colors hover:text-[#8b5e3c] [&::-webkit-details-marker]:hidden">
+              Categories
+              <ChevronDown size={14} strokeWidth={1.8} className="transition-transform group-open:rotate-180" />
+            </summary>
+            <div className="absolute right-0 top-8 z-30 w-60 rounded-2xl border border-black/10 bg-white p-2 shadow-xl">
+              {categories.map((category) => (
+                <Link
+                  key={category.id}
+                  href={`/shop?category=${category.slug}`}
+                  className="block rounded-xl px-3 py-2.5 text-left text-xs font-medium text-[#383838] transition-colors hover:bg-[#f5f4f1] hover:text-[#8b5e3c]"
+                >
+                  {category.name}
+                </Link>
+              ))}
+            </div>
+          </details>
         </div>
 
         <div className="flex items-center gap-4 lg:justify-self-end">

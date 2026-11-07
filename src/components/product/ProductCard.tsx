@@ -15,7 +15,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, priorityImage = false }: ProductCardProps) {
-  const { addToCart, openQuickView } = useCart();
+  const { addToCart } = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const handleAddToCart = () => {
@@ -24,12 +24,6 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
 
   const handleBuyNow = () => {
     addToCart(product, 1, product.variants?.[0]?.options[0], true);
-  };
-
-  const handleQuickView = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    openQuickView(product);
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
@@ -51,7 +45,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
     <div className="group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-[#E6EAE4] bg-white p-4 text-[#151515] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.06),0_4px_12px_-2px_rgba(0,0,0,0.03)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#005E23]/40 hover:shadow-[0_22px_45px_-10px_rgba(0,0,0,0.12),0_10px_20px_-5px_rgba(0,94,35,0.08)] sm:p-5">
       <div>
         {/* Product Image Stage (Edge-to-Edge Filled Image with Floating Badges) */}
-        <div className="relative aspect-square sm:aspect-[4/3.5] w-full overflow-hidden rounded-[22px] bg-[#F7F8F6] shadow-[inset_0_1px_3px_rgba(0,0,0,0.04),0_2px_8px_rgba(0,0,0,0.02)]">
+        <div className="relative aspect-square sm:aspect-4/3.5 w-full overflow-hidden rounded-[22px] bg-[#F7F8F6] shadow-[inset_0_1px_3px_rgba(0,0,0,0.04),0_2px_8px_rgba(0,0,0,0.02)]">
           {/* Top-Left Floating Discount Pill */}
           {product.discount > 0 && (
             <span className="absolute left-3 top-3 z-10 rounded-full bg-[#005E23] px-3 py-1 text-[11px] font-bold tracking-wider text-white shadow-[0_2px_8px_rgba(0,94,35,0.3)]">

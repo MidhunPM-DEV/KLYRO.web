@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MessageCircle, Mail, MapPin, ArrowRight, CheckCircle2 } from "lucide-react";
+import { MessageCircle, ArrowRight } from "lucide-react";
 import { categories, siteConfig } from "@/src/data/products";
 
 export default function Footer() {

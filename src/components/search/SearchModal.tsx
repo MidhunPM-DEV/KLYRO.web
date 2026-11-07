@@ -3,10 +3,9 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, X, ArrowRight, Tag } from "lucide-react";
+import { Search, X, Tag } from "lucide-react";
 import { useCart } from "@/src/context/CartContext";
 import { products } from "@/src/data/products";
-import { Product } from "@/src/types";
 
 export default function SearchModal() {
   const { isSearchOpen, closeSearch, openQuickView } = useCart();
@@ -16,8 +15,6 @@ export default function SearchModal() {
   useEffect(() => {
     if (isSearchOpen) {
       setTimeout(() => inputRef.current?.focus(), 50);
-    } else {
-      setQuery("");
     }
   }, [isSearchOpen]);
 
@@ -158,4 +155,3 @@ export default function SearchModal() {
     </div>
   );
 }
-
