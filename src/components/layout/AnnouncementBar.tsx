@@ -37,7 +37,7 @@ export default function AnnouncementBar() {
             <span className="hidden xs:inline">{siteConfig.whatsappDisplay}</span>
           </a>
           <span className="hidden h-3 w-px bg-white/20 md:inline-block" />
-          <Link href="#track" className="hidden items-center gap-1 transition-colors hover:text-white md:inline-flex">
+          <Link href="/track" className="hidden items-center gap-1 transition-colors hover:text-white md:inline-flex">
             <MapPin size={12} />
             Track Order
           </Link>

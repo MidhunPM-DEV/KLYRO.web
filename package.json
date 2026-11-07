@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "backend": "node backend/server.js",
+    "admin": "npm run dev --prefix admin",
     "lint": "eslint"
   },
   "dependencies": {

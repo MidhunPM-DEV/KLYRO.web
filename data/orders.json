@@ -1,0 +1,55 @@
+[
+  {
+    "id": "KLY-78241",
+    "createdAt": "2026-11-06T08:30:00.000Z",
+    "status": "shipped",
+    "customer": {
+      "fullName": "Sneha Nair",
+      "mobileNumber": "9876543210",
+      "email": "sneha.nair@example.com",
+      "houseBuilding": "Flat 304, Palm Grove Apartments",
+      "streetLocality": "Kaloor Kadavanthra Road",
+      "city": "Kochi",
+      "state": "Kerala",
+      "pinCode": "682020",
+      "landmark": "Opposite Metro Pillar 782"
+    },
+    "items": [
+      {
+        "productId": "prod-1",
+        "name": "Portable Mini Blender",
+        "price": 899,
+        "quantity": 1,
+        "variant": "Sage Green",
+        "image": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=400&q=80",
+        "subtotal": 899
+      }
+    ],
+    "subtotal": 899,
+    "shippingFee": 0,
+    "totalAmount": 899,
+    "statusHistory": [
+      {
+        "status": "placed",
+        "timestamp": "2026-11-06T08:30:00.000Z",
+        "message": "Order placed and logged in KLYRO system"
+      },
+      {
+        "status": "confirmed",
+        "timestamp": "2026-11-06T09:15:00.000Z",
+        "message": "Order & address confirmed by WhatsApp Support Desk"
+      },
+      {
+        "status": "processing",
+        "timestamp": "2026-11-06T14:00:00.000Z",
+        "message": "Item passed multi-point quality check and packaged"
+      },
+      {
+        "status": "shipped",
+        "timestamp": "2026-11-07T04:20:00.000Z",
+        "message": "Dispatched via Express Courier. Tracking AWB: #BLR-98214"
+      }
+    ]
+  }
+]
+

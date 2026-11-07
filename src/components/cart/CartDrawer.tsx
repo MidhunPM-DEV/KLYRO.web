@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, MessageCircle, CheckCircle2, ShieldCheck } from "lucide-react";
+import { X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, MessageCircle, CheckCircle2, ShieldCheck, Check } from "lucide-react";
 import { useCart } from "@/src/context/CartContext";
 import { siteConfig } from "@/src/data/products";
 import { CustomerDetails } from "@/src/types";
@@ -19,11 +19,12 @@ export default function CartDrawer() {
     subtotal,
     shippingFee,
     totalAmount,
-    generateWhatsAppOrderUrl,
     clearCart,
   } = useCart();
 
-  const [step, setStep] = useState<'cart' | 'checkout'>('cart');
+  const [step, setStep] = useState<'cart' | 'checkout' | 'success'>('cart');
+  const [createdOrderId, setCreatedOrderId] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<CustomerDetails>({
     fullName: "",
     mobileNumber: "",
@@ -63,17 +64,49 @@ export default function CartDrawer() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleCheckoutSubmit = (e: React.FormEvent) => {
+  const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const url = generateWhatsAppOrderUrl(formData);
-    window.open(url, "_blank");
-    // Close cart drawer after forwarding
-    setTimeout(() => {
-      closeCart();
-      setStep('cart');
-    }, 1200);
+    setIsSubmitting(true);
+
+    try {
+      // Send order to backend API to register Order ID & persist in database
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer: formData,
+          items: cart,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setCreatedOrderId(data.orderId);
+        setStep('success');
+
+        // Store last order ID in localStorage for easy tracking
+        try {
+          localStorage.setItem('klyro_last_order', data.orderId);
+        } catch {}
+
+        // Open WhatsApp with pre-filled message including verified Order ID
+        if (data.whatsappUrl) {
+          window.open(data.whatsappUrl, '_blank');
+        }
+
+        clearCart();
+      } else {
+        alert(data.error || 'Failed to place order. Please try again.');
+      }
+    } catch (err) {
+      console.error('Order checkout error:', err);
+      alert('Network error while placing order. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -88,7 +121,11 @@ export default function CartDrawer() {
           <div className="flex items-center gap-2">
             <ShoppingBag size={20} className="text-[#005E23]" />
             <h2 className="text-base font-bold text-[#151515]">
-              {step === 'cart' ? `Your Cart (${totalItems})` : 'Delivery Details'}
+              {step === 'cart'
+                ? `Your Cart (${totalItems})`
+                : step === 'checkout'
+                ? 'Delivery Address'
+                : 'Order Confirmed!'}
             </h2>
           </div>
           <button
@@ -125,7 +162,45 @@ export default function CartDrawer() {
 
         {/* Drawer Body */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          {step === 'cart' ? (
+          {step === 'success' ? (
+            /* Order Placed Success View */
+            <div className="flex h-full flex-col items-center justify-center text-center py-8">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#ecfdf5] text-[#005E23]">
+                <Check size={32} strokeWidth={2.5} />
+              </div>
+              <span className="mt-3 text-[11px] font-bold uppercase tracking-widest text-[#005E23]">
+                Order Registered
+              </span>
+              <h3 className="mt-1 text-2xl font-black text-[#151515]">
+                #{createdOrderId}
+              </h3>
+              <p className="mt-3 text-xs leading-relaxed text-[#555555] max-w-xs">
+                Your order details have been registered in our system and forwarded to KLYRO WhatsApp Support for instant confirmation & dispatch.
+              </p>
+
+              <div className="mt-8 flex w-full flex-col gap-2.5">
+                <Link
+                  href={`/track?query=${createdOrderId}`}
+                  onClick={closeCart}
+                  className="flex items-center justify-center gap-2 rounded-full bg-[#005E23] py-3 text-xs font-bold uppercase tracking-wider text-white shadow-sm hover:bg-[#004719]"
+                >
+                  <span>Track This Order</span>
+                  <ArrowRight size={14} />
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep('cart');
+                    closeCart();
+                  }}
+                  className="rounded-full border border-[#E8ECE6] py-3 text-xs font-semibold text-[#151515] hover:bg-[#F7F8F6]"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            </div>
+          ) : step === 'cart' ? (
             cart.length === 0 ? (
               <div className="flex h-full flex-col items-center justify-center text-center py-12">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#F7F8F6] text-[#777777]">
@@ -213,7 +288,7 @@ export default function CartDrawer() {
             /* Checkout Step: Customer Delivery Address Form */
             <form id="checkout-form" onSubmit={handleCheckoutSubmit} className="space-y-3.5">
               <div className="rounded-xl bg-[#F7F8F6] p-3 text-[11px] text-[#555555]">
-                Please enter your shipping address. You will be redirected to WhatsApp with your finalized order summary.
+                Please enter your shipping address. Your order will be logged in our system and forwarded to WhatsApp for rapid confirmation.
               </div>
 
               <div>
@@ -362,7 +437,7 @@ export default function CartDrawer() {
         </div>
 
         {/* Drawer Footer with Totals & Actions */}
-        {cart.length > 0 && (
+        {cart.length > 0 && step !== 'success' && (
           <div className="border-t border-[#E8ECE6] bg-white p-6 shadow-lg">
             <div className="space-y-1.5 text-xs text-[#555555]">
               <div className="flex justify-between">
@@ -404,10 +479,11 @@ export default function CartDrawer() {
                 <button
                   type="submit"
                   form="checkout-form"
-                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#25D366] py-3 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#20ba5a] active:scale-95"
+                  disabled={isSubmitting}
+                  className="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#25D366] py-3 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition-all hover:bg-[#20ba5a] active:scale-95 disabled:opacity-60"
                 >
                   <MessageCircle size={17} />
-                  <span>Confirm on WhatsApp</span>
+                  <span>{isSubmitting ? 'Registering Order...' : 'Confirm on WhatsApp'}</span>
                 </button>
               </div>
             )}
@@ -422,4 +498,3 @@ export default function CartDrawer() {
     </div>
   );
 }
-
