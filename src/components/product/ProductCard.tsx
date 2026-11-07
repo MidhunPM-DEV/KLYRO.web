@@ -53,13 +53,13 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
     : null;
 
   return (
-    <div className="group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-[#E8ECE6] bg-white p-4 text-[#151515] shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 hover:border-[#005E23]/40 hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] sm:p-5">
+    <div className="group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-[#E6EAE4] bg-white p-4 text-[#151515] shadow-[0_10px_30px_-5px_rgba(0,0,0,0.06),0_4px_12px_-2px_rgba(0,0,0,0.03)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-[#005E23]/40 hover:shadow-[0_22px_45px_-10px_rgba(0,0,0,0.12),0_10px_20px_-5px_rgba(0,94,35,0.08)] sm:p-5">
       <div>
         {/* Product Image Stage (Edge-to-Edge Filled Image with Floating Badges) */}
-        <div className="relative aspect-square sm:aspect-[4/3.5] w-full overflow-hidden rounded-[22px] bg-[#F7F8F6]">
+        <div className="relative aspect-square sm:aspect-[4/3.5] w-full overflow-hidden rounded-[22px] bg-[#F7F8F6] shadow-[inset_0_1px_3px_rgba(0,0,0,0.04),0_2px_8px_rgba(0,0,0,0.02)]">
           {/* Top-Left Floating Discount Pill */}
           {product.discount > 0 && (
-            <span className="absolute left-3 top-3 z-10 rounded-full bg-[#005E23] px-3 py-1 text-[11px] font-bold tracking-wider text-white shadow-xs">
+            <span className="absolute left-3 top-3 z-10 rounded-full bg-[#005E23] px-3 py-1 text-[11px] font-bold tracking-wider text-white shadow-[0_2px_8px_rgba(0,94,35,0.3)]">
               -{product.discount}% OFF
             </span>
           )}
@@ -80,7 +80,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
               type="button"
               onClick={handleToggleWishlist}
               aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-xs border border-[#E8ECE6] transition-transform duration-200 hover:scale-110 active:scale-95"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] border border-[#E8ECE6] transition-all duration-200 hover:scale-110 hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] active:scale-95"
             >
               <Heart
                 size={18}
@@ -111,7 +111,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
           {/* Bottom Floating Badge (e.g. New Arrival / Bestseller) */}
           {imageBadge && (
             <div className="pointer-events-none absolute bottom-3 left-0 right-0 z-10 flex items-center justify-center">
-              <span className="rounded-full border border-white/80 bg-white/95 px-3.5 py-1 text-[11px] font-bold text-[#005E23] shadow-xs backdrop-blur-xs">
+              <span className="rounded-full border border-white/80 bg-white/95 px-3.5 py-1 text-[11px] font-bold text-[#005E23] shadow-[0_4px_14px_rgba(0,0,0,0.08)] backdrop-blur-xs">
                 {imageBadge}
               </span>
             </div>
@@ -161,7 +161,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex h-11 w-full items-center justify-center gap-1.5 rounded-full border border-[#005E23] bg-white text-xs sm:text-[13px] font-bold text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] active:scale-[0.98]"
+          className="flex h-11 w-full items-center justify-center gap-1.5 rounded-full border border-[#005E23] bg-white text-xs sm:text-[13px] font-bold text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] hover:shadow-[0_4px_12px_rgba(0,94,35,0.15)] active:scale-[0.98]"
         >
           {added ? (
             <>
@@ -180,7 +180,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
         <button
           type="button"
           onClick={handleBuyNow}
-          className="flex h-11 w-full items-center justify-center rounded-full bg-[#005E23] text-xs sm:text-[13px] font-bold text-white shadow-xs transition-all duration-200 hover:bg-[#004719] active:scale-[0.98]"
+          className="flex h-11 w-full items-center justify-center rounded-full bg-[#005E23] text-xs sm:text-[13px] font-bold text-white shadow-[0_4px_14px_rgba(0,94,35,0.28)] transition-all duration-200 hover:bg-[#004719] hover:shadow-[0_6px_20px_rgba(0,94,35,0.38)] active:scale-[0.98]"
         >
           <span>Buy Now</span>
         </button>
