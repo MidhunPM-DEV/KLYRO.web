@@ -161,16 +161,16 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex h-10 w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#005E23] bg-white px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] hover:shadow-[0_4px_12px_rgba(0,94,35,0.15)] active:scale-[0.98]"
+          className="group/atc flex h-10 w-full items-center justify-center gap-1.5 rounded-xl border border-[#005E23] bg-white px-1.5 text-[11px] sm:text-xs font-bold tracking-tight text-[#005E23] transition-all duration-200 hover:bg-[#005E23] hover:text-white active:scale-[0.98]"
         >
           {added ? (
             <>
-              <Check size={14} strokeWidth={2.5} className="text-[#005E23]" />
+              <Check size={14} strokeWidth={2.5} className="shrink-0 text-[#005E23] group-hover/atc:text-white transition-colors duration-200" />
               <span className="truncate">Added</span>
             </>
           ) : (
             <>
-              <ShoppingCart size={14} strokeWidth={2.2} className="text-[#005E23] shrink-0" />
+              <ShoppingCart size={14} strokeWidth={2.2} className="shrink-0 text-[#005E23] group-hover/atc:text-white transition-colors duration-200" />
               <span className="truncate">Add to Cart</span>
             </>
           )}
