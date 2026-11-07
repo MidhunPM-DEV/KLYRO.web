@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from "react";
-import { Star, ShoppingBag, MessageCircle, Check, CheckCircle2 } from "lucide-react";
+import { Star, MessageCircle, CheckCircle2 } from "lucide-react";
 import { Product } from "@/src/types";
 import { useCart } from "@/src/context/CartContext";
+import AddToCartButton from "@/src/components/buttons/AddToCartButton";
 
 export default function ProductPurchaseSection({ product }: { product: Product }) {
   const { addToCart, generateSingleProductWhatsAppUrl } = useCart();
@@ -11,14 +12,11 @@ export default function ProductPurchaseSection({ product }: { product: Product }
     product.variants?.[0]?.options[0] || ""
   );
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
 
   const formatPrice = (amount: number) => `₹${amount.toLocaleString('en-IN')}`;
 
   const handleAddToCart = () => {
     addToCart(product, quantity, selectedVariant);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
   };
 
   const handleWhatsAppOrder = () => {
@@ -132,26 +130,12 @@ export default function ProductPurchaseSection({ product }: { product: Product }
 
       {/* Dual CTA Buttons */}
       <div className="pt-4 space-y-3">
-        <button
-          type="button"
+        <AddToCartButton
           onClick={handleAddToCart}
-          className={`flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#005E23] py-3.5 px-4 text-xs font-bold tracking-wide transition-all duration-200 shadow-sm active:scale-98 ${added
-            ? "bg-[#005E23] text-white"
-            : "bg-white text-[#005E23] hover:bg-[#F2F7F4]"
-            }`}
-        >
-          {added ? (
-            <>
-              <Check size={16} strokeWidth={2.5} />
-              <span>Added to Cart!</span>
-            </>
-          ) : (
-            <>
-              <ShoppingBag size={16} />
-              <span>Add to Cart • {formatPrice(product.price * quantity)}</span>
-            </>
-          )}
-        </button>
+          showPrice={true}
+          price={product.price * quantity}
+          size="lg"
+        />
 
         <button
           type="button"

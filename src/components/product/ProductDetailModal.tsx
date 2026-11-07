@@ -3,15 +3,16 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X, ShoppingBag, MessageCircle, Star, Check, ShieldCheck, Truck } from "lucide-react";
+import { X, MessageCircle, Star, ShieldCheck, Truck } from "lucide-react";
 import { useCart } from "@/src/context/CartContext";
+import AddToCartButton from "@/src/components/buttons/AddToCartButton";
+import BuyNowButton from "@/src/components/buttons/BuyNowButton";
 
 export default function ProductDetailModal() {
   const { quickViewProduct, closeQuickView, addToCart, generateSingleProductWhatsAppUrl } = useCart();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState<string>("");
   const [quantity, setQuantity] = useState(1);
-  const [added, setAdded] = useState(false);
 
   if (!quickViewProduct) return null;
 
@@ -20,11 +21,9 @@ export default function ProductDetailModal() {
 
   const handleAddToCart = () => {
     addToCart(product, quantity, currentVariant);
-    setAdded(true);
     setTimeout(() => {
-      setAdded(false);
       closeQuickView();
-    }, 1000);
+    }, 1500);
   };
 
   const handleWhatsAppOrder = () => {
@@ -182,14 +181,10 @@ export default function ProductDetailModal() {
           {/* Action Buttons */}
           <div className="mt-6 pt-4 border-t border-[#E8ECE6] space-y-2.5">
             <div className="grid grid-cols-2 gap-2.5">
-              <button
-                type="button"
+              <AddToCartButton
                 onClick={handleAddToCart}
-                className="flex items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-white py-2.5 px-2 text-[11px] sm:text-xs font-bold text-[#005E23] shadow-xs transition-all hover:bg-[#F2F7F4] active:scale-95"
-              >
-                {added ? <Check size={14} className="text-[#005E23]" /> : <ShoppingBag size={14} className="text-[#005E23]" />}
-                <span className="truncate">{added ? "Added!" : "Add to Cart"}</span>
-              </button>
+                size="md"
+              />
 
               <button
                 type="button"
