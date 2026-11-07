@@ -26,6 +26,7 @@ const EMPTY_FORM = {
   discount: '',
   description: '',
   image: '',
+  imageFile: null as File | null,
   inStock: true,
   isNewArrival: false,
   isBestSeller: false,
@@ -83,10 +84,12 @@ export default function ProductsManager({
   });
 
   // ── ADD PRODUCT ──────────────────────────────────────────────
-  const handleFormChange = (key: string, value: string | boolean) => {
+  const handleFormChange = (key: string, value: string | boolean | File | null) => {
     if (key === 'category') {
       const cat = CATEGORY_OPTIONS.find((c) => c.value === value);
       setForm((f) => ({ ...f, category: value as string, categorySlug: cat?.slug || '' }));
+    } else if (key === 'imageFile') {
+      setForm((f) => ({ ...f, imageFile: value as File | null }));
     } else {
       setForm((f) => ({ ...f, [key]: value }));
     }
@@ -96,13 +99,30 @@ export default function ProductsManager({
     e.preventDefault();
     setFormError('');
 
-    if (!form.name.trim() || !form.price || !form.image.trim()) {
-      setFormError('Name, price, and image URL are required.');
+    if (!form.name.trim() || !form.price || !form.imageFile) {
+      setFormError('Name, price, and product image are required.');
       return;
     }
 
     setSaving(true);
     try {
+      // Upload image first
+      const formData = new FormData();
+      formData.append('image', form.imageFile);
+
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const uploadData = await uploadRes.json();
+      
+      if (!uploadRes.ok || !uploadData.success) {
+        setFormError(uploadData.error || 'Failed to upload image.');
+        setSaving(false);
+        return;
+      }
+
+      // Now create product with uploaded image URL
       const res = await fetch('/api/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -114,7 +134,7 @@ export default function ProductsManager({
           originalPrice: form.originalPrice ? Number(form.originalPrice) : Number(form.price),
           discount: form.discount ? Number(form.discount) : 0,
           description: form.description.trim(),
-          images: [form.image.trim()],
+          images: [uploadData.url],
           inStock: form.inStock,
           isNewArrival: form.isNewArrival,
           isBestSeller: form.isBestSeller,
@@ -394,22 +414,54 @@ export default function ProductsManager({
                 </div>
               </div>
 
-              {/* Image URL */}
+              {/* Image Upload */}
               <div>
-                <label className="block text-xs font-bold text-[#151515] mb-1.5">Image URL *</label>
-                <input
-                  type="url"
-                  value={form.image}
-                  onChange={(e) => handleFormChange('image', e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  required
-                  className="w-full rounded-xl border border-[#E8ECE6] bg-[#F7F8F6] px-4 py-2.5 text-sm text-[#151515] placeholder-[#AAAAAA] focus:border-[#005E23] focus:bg-white focus:outline-none"
-                />
-                {form.image && (
-                  <div className="mt-2 relative h-20 w-20 rounded-xl overflow-hidden border border-[#E8ECE6]">
-                    <Image src={form.image} alt="preview" fill className="object-cover" unoptimized />
-                  </div>
-                )}
+                <label className="block text-xs font-bold text-[#151515] mb-1.5">Product Image *</label>
+                <div className="space-y-3">
+                  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[#E8ECE6] rounded-xl bg-[#F7F8F6] hover:bg-white hover:border-[#005E23] transition-all cursor-pointer">
+                    <div className="flex flex-col items-center justify-center py-4">
+                      <Upload size={24} className="text-[#005E23] mb-2" />
+                      <p className="text-xs font-bold text-[#151515]">Click to upload image</p>
+                      <p className="text-[10px] text-[#777777] mt-1">PNG, JPG, WEBP up to 5MB</p>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          handleFormChange('imageFile', file);
+                          // Create preview URL
+                          const previewUrl = URL.createObjectURL(file);
+                          handleFormChange('image', previewUrl);
+                        }
+                      }}
+                      className="hidden"
+                    />
+                  </label>
+                  
+                  {form.imageFile && (
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-[#ecfdf5] border border-[#a7f3d0]">
+                      <div className="relative h-16 w-16 rounded-lg overflow-hidden border border-[#E8ECE6] shrink-0">
+                        <Image src={form.image} alt="preview" fill className="object-cover" unoptimized />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs font-bold text-[#151515] truncate">{form.imageFile.name}</p>
+                        <p className="text-[10px] text-[#777777]">{(form.imageFile.size / 1024).toFixed(1)} KB</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleFormChange('imageFile', null);
+                          handleFormChange('image', '');
+                        }}
+                        className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-100 shrink-0"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Description */}
