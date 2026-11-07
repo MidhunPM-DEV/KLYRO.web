@@ -1,38 +1,19 @@
-const path = require('path');
-const fs = require('fs');
+const Order = require('../models/Order');
 const siteConfig = require('../config/siteConfig');
 
-const ordersFile = path.join(__dirname, '..', 'data', 'orders.json');
-
-function getOrders() {
-  if (!fs.existsSync(ordersFile)) {
-    fs.writeFileSync(ordersFile, JSON.stringify([], null, 2));
-    return [];
-  }
-  const raw = fs.readFileSync(ordersFile, 'utf8');
-  return JSON.parse(raw);
-}
-
-function saveOrders(orders) {
-  fs.writeFileSync(ordersFile, JSON.stringify(orders, null, 2));
-}
-
-exports.createOrder = (body) => {
+exports.createOrder = async (body) => {
   const { customer, items } = body;
 
   if (!customer || !customer.fullName || !customer.mobileNumber) {
     return { success: false, status: 400, error: 'Full name and mobile number are required' };
   }
-
   if (!customer.houseBuilding || !customer.streetLocality || !customer.city || !customer.pinCode) {
     return { success: false, status: 400, error: 'Complete delivery address is required' };
   }
-
   if (!items || !Array.isArray(items) || items.length === 0) {
     return { success: false, status: 400, error: 'Cart must contain at least one product' };
   }
 
-  const orders = getOrders();
   const randomSuffix = Math.floor(10000 + Math.random() * 90000);
   const orderId = `KLY-${randomSuffix}`;
 
@@ -47,11 +28,11 @@ exports.createOrder = (body) => {
   }));
 
   const subtotal = orderItems.reduce((sum, it) => sum + it.subtotal, 0);
-  const shippingFee = subtotal >= siteConfig.freeShippingThreshold || subtotal === 0 ? 0 : siteConfig.standardShippingFee;
+  const shippingFee = subtotal >= siteConfig.freeShippingThreshold ? 0 : siteConfig.standardShippingFee;
   const totalAmount = subtotal + shippingFee;
   const now = new Date().toISOString();
 
-  const newOrder = {
+  const newOrder = new Order({
     id: orderId,
     createdAt: now,
     status: 'placed',
@@ -60,115 +41,68 @@ exports.createOrder = (body) => {
     subtotal,
     shippingFee,
     totalAmount,
-    statusHistory: [
-      {
-        status: 'placed',
-        timestamp: now,
-        message: 'Order initiated with delivery address',
-      },
-    ],
-  };
+    statusHistory: [{ status: 'placed', timestamp: now, message: 'Order initiated with delivery address' }],
+  });
 
-  orders.unshift(newOrder);
-  saveOrders(orders);
+  await newOrder.save();
 
-  // Build WhatsApp URL
-  const formatPrice = (n) => `₹${n.toLocaleString('en-IN')}`;
+  // Build WhatsApp message
+  const fmt = (n) => `₹${n.toLocaleString('en-IN')}`;
   const lines = [
     `*NEW ORDER — ${siteConfig.name}*`,
     `_Order ID: *${orderId}*_`,
     `_${siteConfig.tagline}_`,
-    "",
-    "*Customer Details*",
+    '', '*Customer Details*',
     `Name: ${customer.fullName.trim()}`,
     `Mobile: ${customer.mobileNumber.trim()}`,
   ];
-
-  if (customer.email && customer.email.trim()) {
-    lines.push(`Email: ${customer.email.trim()}`);
-  }
-
-  lines.push(
-    "",
-    "*Delivery Address*",
+  if (customer.email) lines.push(`Email: ${customer.email.trim()}`);
+  lines.push('', '*Delivery Address*',
     `${customer.houseBuilding.trim()}, ${customer.streetLocality.trim()}`,
-    `${customer.city.trim()}, ${customer.state.trim()} - ${customer.pinCode.trim()}`
-  );
-
-  if (customer.landmark && customer.landmark.trim()) {
-    lines.push(`Landmark: ${customer.landmark.trim()}`);
-  }
-  if (customer.orderNotes && customer.orderNotes.trim()) {
-    lines.push(`Order Notes: ${customer.orderNotes.trim()}`);
-  }
-
-  lines.push("", "*Order Items*");
-  orderItems.forEach((item, index) => {
-    const variantText = item.variant ? ` [${item.variant}]` : '';
-    lines.push(
-      `${index + 1}. ${item.name}${variantText} (Qty: ${item.quantity}) — ${formatPrice(item.price)} each = *${formatPrice(item.subtotal)}*`
-    );
+    `${customer.city.trim()}, ${customer.state.trim()} - ${customer.pinCode.trim()}`);
+  if (customer.landmark) lines.push(`Landmark: ${customer.landmark.trim()}`);
+  if (customer.orderNotes) lines.push(`Notes: ${customer.orderNotes.trim()}`);
+  lines.push('', '*Order Items*');
+  orderItems.forEach((item, i) => {
+    const v = item.variant ? ` [${item.variant}]` : '';
+    lines.push(`${i + 1}. ${item.name}${v} (Qty: ${item.quantity}) — ${fmt(item.price)} each = *${fmt(item.subtotal)}*`);
   });
+  lines.push('', `Subtotal: ${fmt(subtotal)}`,
+    `Shipping: ${shippingFee === 0 ? 'FREE' : fmt(shippingFee)}`,
+    `*Total Payable: ${fmt(totalAmount)}*`, '',
+    `Please confirm my Order *#${orderId}* and share estimated delivery timeline.`);
 
-  lines.push(
-    "",
-    `Subtotal: ${formatPrice(subtotal)}`,
-    `Shipping: ${shippingFee === 0 ? "FREE" : formatPrice(shippingFee)}`,
-    `*Total Payable: ${formatPrice(totalAmount)}*`,
-    "",
-    `Please confirm my Order *#${orderId}* and share estimated delivery timeline.`
-  );
+  const whatsappUrl = `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
 
-  const whatsappUrl = `https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
-
-  return {
-    success: true,
-    orderId,
-    order: newOrder,
-    whatsappUrl,
-  };
+  return { success: true, orderId, order: newOrder.toObject(), whatsappUrl };
 };
 
-exports.getAllOrders = () => {
-  const orders = getOrders();
+exports.getAllOrders = async () => {
+  const orders = await Order.find().sort({ createdAt: -1 }).select('-_id -__v').lean();
   return { success: true, total: orders.length, orders };
 };
 
-exports.getOrderById = (id) => {
-  const orders = getOrders();
-  const order = orders.find((o) => o.id.toUpperCase() === id.trim().toUpperCase());
-  if (!order) {
-    return { success: false, status: 404, error: `Order #${id} not found` };
-  }
+exports.getOrderById = async (id) => {
+  const order = await Order.findOne({ id: id.trim().toUpperCase() }).select('-_id -__v').lean();
+  if (!order) return { success: false, status: 404, error: `Order #${id} not found` };
   return { success: true, order };
 };
 
-exports.trackOrder = (query) => {
-  const orders = getOrders();
+exports.trackOrder = async (query) => {
   const clean = query.trim().toUpperCase();
+  let order = await Order.findOne({ id: clean }).lean();
+  if (order) return { success: true, matchType: 'order_id', orders: [order] };
 
-  // Try finding by Order ID
-  const order = orders.find((o) => o.id.toUpperCase() === clean);
-  if (order) {
-    return { success: true, matchType: 'order_id', orders: [order] };
-  }
-
-  // Try finding by phone
   const phoneClean = query.replace(/\D/g, '');
-  const byPhone = orders.filter((o) => o.customer.mobileNumber.replace(/\D/g, '').includes(phoneClean));
-  if (byPhone.length > 0) {
-    return { success: true, matchType: 'phone', orders: byPhone };
-  }
+  const byPhone = await Order.find({ 'customer.mobileNumber': { $regex: phoneClean } }).lean();
+  if (byPhone.length > 0) return { success: true, matchType: 'phone', orders: byPhone };
 
   return { success: false, status: 404, error: `No orders found matching "${query}"` };
 };
 
-exports.updateOrderStatus = (id, status, message) => {
-  const orders = getOrders();
-  const order = orders.find((o) => o.id.toUpperCase() === id.trim().toUpperCase());
-  if (!order) {
-    return { success: false, status: 404, error: `Order #${id} not found` };
-  }
+exports.updateOrderStatus = async (id, status, message) => {
+  const order = await Order.findOne({ id: id.trim().toUpperCase() });
+  if (!order) return { success: false, status: 404, error: `Order #${id} not found` };
 
   order.status = status;
   order.statusHistory.push({
@@ -176,8 +110,6 @@ exports.updateOrderStatus = (id, status, message) => {
     timestamp: new Date().toISOString(),
     message: message || `Status updated to ${status}`,
   });
-
-  saveOrders(orders);
-  return { success: true, order };
+  await order.save();
+  return { success: true, order: order.toObject() };
 };
-

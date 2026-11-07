@@ -62,15 +62,22 @@ export default function Footer() {
             </p>
 
             {/* Direct WhatsApp Callout */}
-            <div className="mt-6 flex items-center gap-3">
+            <div className="mt-6 flex flex-col gap-2">
               <a
                 href={`https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent("Hello KLYRO Team, I would like to inquire about your products.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-[#005E23] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-[#004719]"
+                className="inline-flex items-center gap-2 rounded-full bg-[#005E23] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-[#004719] w-fit"
               >
                 <MessageCircle size={14} className="text-[#25D366]" />
                 <span>WhatsApp: {siteConfig.whatsappDisplay}</span>
+              </a>
+              <a
+                href="mailto:klyrotrade@gmail.com"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-xs font-bold text-[#8E8E8E] transition-colors hover:text-white w-fit"
+              >
+                <Mail size={13} />
+                <span>klyrotrade@gmail.com</span>
               </a>
             </div>
           </div>
@@ -169,11 +176,11 @@ export default function Footer() {
         <div className="mt-14 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#777777]">
           <p>© 2026 KLYRO. All rights reserved.</p>
           <div className="flex items-center gap-5 text-[11px]">
-            <Link href="#privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <span>•</span>
-            <Link href="#terms" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
             <span>•</span>
-            <Link href="#refund" className="hover:text-white transition-colors">Refund & Return</Link>
+            <Link href="/refund-policy" className="hover:text-white transition-colors">Refund & Return</Link>
           </div>
         </div>
 

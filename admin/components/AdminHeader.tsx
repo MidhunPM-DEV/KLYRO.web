@@ -68,7 +68,7 @@ export default function AdminHeader({ refreshing, onRefresh }: Props) {
             </div>
             <div className="hidden sm:block text-left">
               <p className="text-xs font-bold text-[#151515] leading-none">Admin</p>
-              <p className="text-[10px] text-[#AAAAAA] leading-none mt-0.5">support@klyro.com</p>
+              <p className="text-[10px] text-[#AAAAAA] leading-none mt-0.5">klyrotrade@gmail.com</p>
             </div>
             <ChevronDown size={13} className="text-[#AAAAAA]" />
           </button>
@@ -77,7 +77,7 @@ export default function AdminHeader({ refreshing, onRefresh }: Props) {
             <div className="absolute right-0 top-12 z-50 w-44 rounded-2xl border border-[#EBEBEB] bg-white shadow-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-[#EBEBEB]">
                 <p className="text-xs font-bold text-[#151515]">Admin Desk</p>
-                <p className="text-[10px] text-[#AAAAAA] mt-0.5">support@klyro.com</p>
+                <p className="text-[10px] text-[#AAAAAA] mt-0.5">klyrotrade@gmail.com</p>
               </div>
               <button
                 type="button"

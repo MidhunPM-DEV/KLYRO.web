@@ -131,7 +131,7 @@ const faqs: FAQItem[] = [
   {
     category: 'Account & Support',
     question: 'How can I contact customer support?',
-    answer: 'WhatsApp: +91 92926 74447 (Fastest response) or Email: support@klyro.com. Our team is available Monday-Saturday, 9 AM - 7 PM IST.',
+    answer: 'WhatsApp: +91 92926 74447 (Fastest response) or Email: klyrotrade@gmail.com. Our team is available Monday-Saturday, 9 AM - 7 PM IST.',
   },
   {
     category: 'Account & Support',
@@ -296,7 +296,7 @@ export default function FAQPage() {
               Chat on WhatsApp
             </a>
             <a
-              href="mailto:support@klyro.com"
+              href="mailto:klyrotrade@gmail.com"
               className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-colors border-2 border-white/20"
             >
               Email Support

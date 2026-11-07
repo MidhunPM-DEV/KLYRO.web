@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import {
   Search, Star, CheckCircle2, XCircle, Tag,
@@ -31,8 +31,24 @@ const EMPTY_FORM = {
   isBestSeller: false,
 };
 
-export default function ProductsManager({ initialProducts }: { initialProducts: Product[] }) {
+export default function ProductsManager({
+  initialProducts,
+  onProductsChange,
+}: {
+  initialProducts: Product[];
+  onProductsChange?: (products: Product[]) => void;
+}) {
   const [productList, setProductList] = useState<Product[]>(initialProducts);
+
+  // Sync when parent passes fresh data (after refresh)
+  useEffect(() => {
+    setProductList(initialProducts);
+  }, [initialProducts]);
+
+  const updateList = (next: Product[]) => {
+    setProductList(next);
+    onProductsChange?.(next);
+  };
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -49,9 +65,8 @@ export default function ProductsManager({ initialProducts }: { initialProducts: 
   const formatPrice = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
   const toggleStock = (id: string) => {
-    setProductList((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, inStock: !p.inStock } : p))
-    );
+    const next = productList.map((p) => (p.id === id ? { ...p, inStock: !p.inStock } : p));
+    updateList(next);
   };
 
   const filtered = productList.filter((p) => {
@@ -110,7 +125,7 @@ export default function ProductsManager({ initialProducts }: { initialProducts: 
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        setProductList((prev) => [data.product, ...prev]);
+        updateList([data.product, ...productList]);
         setForm({ ...EMPTY_FORM });
         setShowAddModal(false);
       } else {
@@ -131,7 +146,7 @@ export default function ProductsManager({ initialProducts }: { initialProducts: 
       const res = await fetch(`/api/products/${deleteTarget.id}`, { method: 'DELETE' });
       const data = await res.json();
       if (res.ok && data.success) {
-        setProductList((prev) => prev.filter((p) => p.id !== deleteTarget.id));
+        updateList(productList.filter((p) => p.id !== deleteTarget.id));
         setDeleteTarget(null);
       } else {
         alert(data.error || 'Failed to delete product.');

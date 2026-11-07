@@ -1,12 +1,14 @@
+require('dotenv').config();
 const http = require('http');
 const url = require('url');
+const connectDB = require('./config/db');
 const siteConfig = require('./config/siteConfig');
 const productsController = require('./controllers/productsController');
 const ordersController = require('./controllers/ordersController');
 const newsletterController = require('./controllers/newsletterController');
 const inquiriesController = require('./controllers/inquiriesController');
 
-const PORT = siteConfig.port || 5001;
+const PORT = process.env.PORT || siteConfig.port || 5001;
 
 function sendJson(res, statusCode, data) {
   res.writeHead(statusCode, {
@@ -21,22 +23,15 @@ function sendJson(res, statusCode, data) {
 function parseBody(req) {
   return new Promise((resolve) => {
     let body = '';
-    req.on('data', (chunk) => {
-      body += chunk.toString();
-    });
+    req.on('data', (chunk) => { body += chunk.toString(); });
     req.on('end', () => {
       if (!body) return resolve({});
-      try {
-        resolve(JSON.parse(body));
-      } catch {
-        resolve({});
-      }
+      try { resolve(JSON.parse(body)); } catch { resolve({}); }
     });
   });
 }
 
 const server = http.createServer(async (req, res) => {
-  // CORS Preflight
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',
@@ -52,139 +47,115 @@ const server = http.createServer(async (req, res) => {
   const method = req.method;
 
   try {
-    // Health Check
+    // Health
     if (pathname === '/' || pathname === '/api/health') {
       return sendJson(res, 200, {
         status: 'online',
+        db: 'mongodb',
         name: siteConfig.name,
-        tagline: siteConfig.tagline,
         port: PORT,
         timestamp: new Date().toISOString(),
       });
     }
 
-    // 1. Products API
+    // ── PRODUCTS ─────────────────────────────────────────
     if (pathname === '/api/products' && method === 'GET') {
-      const data = productsController.getProducts(query);
-      return sendJson(res, 200, data);
+      return sendJson(res, 200, await productsController.getProducts(query));
     }
-
-    // Add product
     if (pathname === '/api/products' && method === 'POST') {
       const body = await parseBody(req);
-      const data = productsController.addProduct(body);
+      return sendJson(res, 200, await productsController.addProduct(body));
+    }
+    if (pathname.startsWith('/api/products/') && method === 'GET') {
+      const slug = pathname.replace('/api/products/', '');
+      const data = await productsController.getProductBySlug(slug);
       return sendJson(res, data.status || 200, data);
     }
-
-    // Delete product: /api/products/:id
     if (pathname.startsWith('/api/products/') && method === 'DELETE') {
       const id = pathname.replace('/api/products/', '');
-      const data = productsController.deleteProduct(id);
+      const data = await productsController.deleteProduct(id);
       return sendJson(res, data.status || 200, data);
     }
-
-    // Update product: /api/products/:id
     if (pathname.startsWith('/api/products/') && method === 'PATCH') {
       const id = pathname.replace('/api/products/', '');
       const body = await parseBody(req);
-      const data = productsController.updateProduct(id, body);
+      const data = await productsController.updateProduct(id, body);
       return sendJson(res, data.status || 200, data);
     }
 
-    // Single Product: /api/products/:slug
-    if (pathname.startsWith('/api/products/') && method === 'GET') {
-      const slug = pathname.replace('/api/products/', '');
-      const data = productsController.getProductBySlug(slug);
-      return sendJson(res, data.status || 200, data);
-    }
-
-    // 2. Categories API
+    // ── CATEGORIES ───────────────────────────────────────
     if (pathname === '/api/categories' && method === 'GET') {
-      const data = productsController.getCategories();
-      return sendJson(res, 200, data);
+      return sendJson(res, 200, await productsController.getCategories());
     }
 
-    // 3. Orders API
+    // ── ORDERS ───────────────────────────────────────────
     if (pathname === '/api/orders' && method === 'GET') {
-      const data = ordersController.getAllOrders();
-      return sendJson(res, 200, data);
+      return sendJson(res, 200, await ordersController.getAllOrders());
     }
-
     if (pathname === '/api/orders' && method === 'POST') {
       const body = await parseBody(req);
-      const data = ordersController.createOrder(body);
+      const data = await ordersController.createOrder(body);
       return sendJson(res, data.status || 200, data);
     }
-
-    // Single Order: /api/orders/:id
     if (pathname.startsWith('/api/orders/') && method === 'GET') {
       const id = pathname.replace('/api/orders/', '');
-      const data = ordersController.getOrderById(id);
+      const data = await ordersController.getOrderById(id);
       return sendJson(res, data.status || 200, data);
     }
-
     if (pathname.startsWith('/api/orders/') && method === 'PATCH') {
       const id = pathname.replace('/api/orders/', '');
       const body = await parseBody(req);
-      const data = ordersController.updateOrderStatus(id, body.status, body.message);
+      const data = await ordersController.updateOrderStatus(id, body.status, body.message);
       return sendJson(res, data.status || 200, data);
     }
 
-    // 4. Order Tracking: /api/track?query=...
+    // ── ORDER TRACKING ───────────────────────────────────
     if (pathname === '/api/track' && method === 'GET') {
-      if (!query.query) {
-        return sendJson(res, 400, { success: false, error: 'Query parameter required' });
-      }
-      const data = ordersController.trackOrder(query.query);
+      if (!query.query) return sendJson(res, 400, { success: false, error: 'Query parameter required' });
+      const data = await ordersController.trackOrder(query.query);
       return sendJson(res, data.status || 200, data);
     }
 
-    // 5. Newsletter subscribe
+    // ── NEWSLETTER ───────────────────────────────────────
     if (pathname === '/api/newsletter' && method === 'POST') {
       const body = await parseBody(req);
-      const data = newsletterController.subscribe(body.email);
+      const data = await newsletterController.subscribe(body.email);
       return sendJson(res, data.status || 200, data);
     }
-
-    // 6. Subscribers list (Admin)
     if (pathname === '/api/subscribers' && method === 'GET') {
-      const data = newsletterController.getAllSubscribers();
-      return sendJson(res, 200, data);
+      return sendJson(res, 200, await newsletterController.getAllSubscribers());
     }
 
-    // 7. Inquiries list (Admin)
+    // ── INQUIRIES ────────────────────────────────────────
     if (pathname === '/api/inquiries' && method === 'GET') {
-      const data = inquiriesController.getAllInquiries();
-      return sendJson(res, 200, data);
+      return sendJson(res, 200, await inquiriesController.getAllInquiries());
     }
-
     if (pathname === '/api/inquiries' && method === 'POST') {
       const body = await parseBody(req);
-      const data = inquiriesController.createInquiry(body);
+      const data = await inquiriesController.createInquiry(body);
       return sendJson(res, data.status || 200, data);
     }
 
-    // Not Found
+    // 404
     return sendJson(res, 404, {
       success: false,
-      error: `Endpoint '${method} ${pathname}' not found on KLYRO backend`,
+      error: `Endpoint '${method} ${pathname}' not found`,
     });
+
   } catch (err) {
-    console.error('Backend Server Error:', err);
-    return sendJson(res, 500, {
-      success: false,
-      error: 'Internal Server Error',
-      details: err.message,
-    });
+    console.error('Server Error:', err);
+    return sendJson(res, 500, { success: false, error: 'Internal Server Error', details: err.message });
   }
 });
 
-server.listen(PORT, () => {
-  console.log(`===============================================`);
-  console.log(` KLYRO Backend Server active on port ${PORT}`);
-  console.log(` Base URL: http://localhost:${PORT}`);
-  console.log(` Health:   http://localhost:${PORT}/api/health`);
-  console.log(`===============================================`);
+// Connect DB then start server
+connectDB().then(() => {
+  server.listen(PORT, () => {
+    console.log(`===============================================`);
+    console.log(` KLYRO Backend  →  http://localhost:${PORT}`);
+    console.log(` Database       →  MongoDB Atlas (klyro)`);
+    console.log(`===============================================`);
+  });
 });
 
 module.exports = server;

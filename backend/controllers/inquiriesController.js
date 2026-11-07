@@ -1,30 +1,17 @@
-const path = require('path');
-const fs = require('fs');
+const Inquiry = require('../models/Inquiry');
 
-const file = path.join(__dirname, '..', 'data', 'inquiries.json');
-
-exports.getAllInquiries = () => {
-  if (!fs.existsSync(file)) {
-    fs.writeFileSync(file, JSON.stringify([], null, 2));
-    return { success: true, total: 0, inquiries: [] };
-  }
-  const list = JSON.parse(fs.readFileSync(file, 'utf8'));
-  return { success: true, total: list.length, inquiries: list };
+exports.getAllInquiries = async () => {
+  const inquiries = await Inquiry.find().sort({ createdAt: -1 }).select('-_id -__v').lean();
+  return { success: true, total: inquiries.length, inquiries };
 };
 
-exports.createInquiry = (body) => {
+exports.createInquiry = async (body) => {
   const { name, phone, email, message, type } = body;
-
   if (!name || !phone || !message) {
     return { success: false, status: 400, error: 'Name, phone, and message are required' };
   }
 
-  if (!fs.existsSync(file)) {
-    fs.writeFileSync(file, JSON.stringify([], null, 2));
-  }
-
-  const list = JSON.parse(fs.readFileSync(file, 'utf8'));
-  const inquiry = {
+  const inquiry = await Inquiry.create({
     id: `INQ-${Math.floor(1000 + Math.random() * 9000)}`,
     name: name.trim(),
     phone: phone.trim(),
@@ -32,11 +19,7 @@ exports.createInquiry = (body) => {
     message: message.trim(),
     type: type || 'general',
     createdAt: new Date().toISOString(),
-  };
-
-  list.unshift(inquiry);
-  fs.writeFileSync(file, JSON.stringify(list, null, 2));
+  });
 
   return { success: true, inquiryId: inquiry.id, message: 'Inquiry received successfully' };
 };
-

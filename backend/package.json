@@ -7,8 +7,16 @@
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
-  "keywords": ["klyro", "ecommerce", "backend", "api"],
+  "keywords": [
+    "klyro",
+    "ecommerce",
+    "backend",
+    "api"
+  ],
   "author": "KLYRO Team",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^18.0.9",
+    "mongoose": "^9.12.0"
+  }
 }
-

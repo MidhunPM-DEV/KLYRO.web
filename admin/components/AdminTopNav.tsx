@@ -131,7 +131,7 @@ export default function AdminTopNav({ currentTab, setCurrentTab, pendingCount, r
                 <div className="absolute right-0 top-12 w-44 rounded-2xl border border-gray-100 bg-white shadow-xl overflow-hidden z-50">
                   <div className="px-4 py-3 border-b border-gray-100">
                     <p className="text-xs font-bold text-gray-800">Admin Desk</p>
-                    <p className="text-[10px] text-gray-400 mt-0.5">support@klyro.com</p>
+                    <p className="text-[10px] text-gray-400 mt-0.5">klyrotrade@gmail.com</p>
                   </div>
                   <button
                     type="button"

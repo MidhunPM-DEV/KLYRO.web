@@ -13,7 +13,7 @@
       "name": "Baby Products & Toys",
       "slug": "baby-products-toys",
       "description": "Certified food-grade silicone sets, gentle grooming tools, and mindful educational wooden toys.",
-      "itemCount": 4,
+      "itemCount": 0,
       "image": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=800&q=85"
     },
     {
@@ -21,7 +21,7 @@
       "name": "Mini Nebulizers",
       "slug": "mini-nebulizers",
       "description": "Quiet ultrasonic mesh inhalers and portable steam vaporizers for fast respiratory relief on the go.",
-      "itemCount": 2,
+      "itemCount": 0,
       "image": "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=85"
     },
     {
@@ -29,7 +29,7 @@
       "name": "Tools",
       "slug": "tools",
       "description": "Ergonomic cordless mini drills, precision magnetic screwdriver sets, and digital laser measuring tools.",
-      "itemCount": 1,
+      "itemCount": 0,
       "image": "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=800&q=85"
     },
     {
@@ -37,34 +37,11 @@
       "name": "Kitchen Items",
       "slug": "kitchen-items",
       "description": "Cordless personal blenders, one-touch food choppers, borosilicate oil sprayers, and precision gram scales.",
-      "itemCount": 1,
+      "itemCount": 0,
       "image": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=800&q=85"
     }
   ],
   "products": [
-    {
-      "id": "prod-3",
-      "slug": "kitchen-oil-sprayer",
-      "name": "Borosilicate Glass Kitchen Oil Sprayer",
-      "category": "Kitchen Items",
-      "categorySlug": "kitchen-items",
-      "price": 249,
-      "originalPrice": 449,
-      "discount": 45,
-      "description": "200ml borosilicate glass olive & cooking oil mist sprayer for air fryers, salads, and tawa cooking.",
-      "features": [
-        "Ultra-fine fan-shaped atomizing nozzle for uniform 0.23ml spray per press",
-        "Durable high-temperature food-grade borosilicate glass vessel",
-        "Ergonomic trigger pump with non-drip suction valve"
-      ],
-      "images": [
-        "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=900&q=85"
-      ],
-      "inStock": true,
-      "rating": 4.7,
-      "reviewsCount": 76,
-      "isFeatured": true
-    },
     {
       "id": "prod-5",
       "slug": "rechargeable-mini-fan",
@@ -176,173 +153,6 @@
       "inStock": true,
       "rating": 4.8,
       "reviewsCount": 47
-    },
-    {
-      "id": "prod-9",
-      "slug": "silicone-baby-feeding-set",
-      "name": "Silicone Baby Feeding Suction Set",
-      "category": "Baby Products & Toys",
-      "categorySlug": "baby-products-toys",
-      "price": 599,
-      "originalPrice": 999,
-      "discount": 40,
-      "description": "100% food-grade BPA-free silicone suction bowl, ergonomic soft training spoon, and catch-all bib.",
-      "features": [
-        "Heavy-duty vacuum suction base locks tightly to high-chair trays",
-        "Curved inner bowl lip guides food onto baby's spoon",
-        "100% platinum food-grade silicone (BPA, PVC, and Lead Free)"
-      ],
-      "images": [
-        "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&w=900&q=85"
-      ],
-      "variants": [
-        {
-          "name": "Color",
-          "options": [
-            "Olive",
-            "Dusty Rose",
-            "Warm Ochre"
-          ]
-        }
-      ],
-      "inStock": true,
-      "rating": 4.9,
-      "reviewsCount": 112,
-      "isNewArrival": true,
-      "isBestSeller": true
-    },
-    {
-      "id": "prod-10",
-      "slug": "baby-electric-nail-trimmer",
-      "name": "Baby Electric Nail Trimmer Kit",
-      "category": "Baby Products & Toys",
-      "categorySlug": "baby-products-toys",
-      "price": 499,
-      "originalPrice": 899,
-      "discount": 44,
-      "description": "Whisper-quiet safe manicure groomer with LED light and 6 cushioned grinding pads for newborns & kids.",
-      "features": [
-        "Ultra-gentle oscillating rotary action files nails smoothly without touching cuticles",
-        "Soft LED guide light allows easy grooming while baby is sleeping",
-        "Includes 6 color-coded grinding pads tailored for newborns to toddlers"
-      ],
-      "images": [
-        "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=900&q=85"
-      ],
-      "inStock": true,
-      "rating": 4.8,
-      "reviewsCount": 84
-    },
-    {
-      "id": "prod-11",
-      "slug": "mini-building-toy-set",
-      "name": "480-Piece Botanical Mini Building Block Set",
-      "category": "Baby Products & Toys",
-      "categorySlug": "baby-products-toys",
-      "price": 599,
-      "originalPrice": 999,
-      "discount": 40,
-      "description": "480-piece micro-architectural block set for mindful building and desk display.",
-      "features": [
-        "480 precision micro-tolerance interlocking ABS plastic building pieces",
-        "Vibrant non-toxic child-safe pigments with smooth edges",
-        "Step-by-step color illustrated assembly booklet included"
-      ],
-      "images": [
-        "https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=900&q=85"
-      ],
-      "inStock": true,
-      "rating": 4.8,
-      "reviewsCount": 61
-    },
-    {
-      "id": "prod-12",
-      "slug": "wooden-educational-stacker",
-      "name": "Wooden Educational Shape & Color Stacker",
-      "category": "Baby Products & Toys",
-      "categorySlug": "baby-products-toys",
-      "price": 399,
-      "originalPrice": 699,
-      "discount": 43,
-      "description": "Natural beech wood geometric sorting and color stacking toy with smooth safe edges.",
-      "features": [
-        "Natural sustainable beechwood with rounded child-safe splinter-free edges",
-        "Non-toxic saliva-proof water-based pastel dye finishing",
-        "5 progressive sorting columns matching geometric discs"
-      ],
-      "images": [
-        "https://images.unsplash.com/photo-1560859251-d563a49c5e4a?auto=format&fit=crop&w=900&q=85"
-      ],
-      "inStock": true,
-      "rating": 4.7,
-      "reviewsCount": 52
-    },
-    {
-      "id": "prod-13",
-      "slug": "compact-nebuliser",
-      "name": "Compact Ultrasonic Mesh Nebulizer",
-      "category": "Mini Nebulizers",
-      "categorySlug": "mini-nebulizers",
-      "price": 999,
-      "originalPrice": 1699,
-      "discount": 41,
-      "description": "Pocket-sized ultrasonic vibrating mesh nebulizer for quiet respiratory steam care at home or travel.",
-      "features": [
-        "Titanium vibrating mesh technology creates microscopic <5μm aerosol particles",
-        "Whisper-silent operation under 25dB, ideal for treating sleeping children",
-        "Dual power: USB-C cable or 2x AA batteries for travel"
-      ],
-      "images": [
-        "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=900&q=85"
-      ],
-      "inStock": true,
-      "rating": 4.9,
-      "reviewsCount": 135,
-      "isNewArrival": true
-    },
-    {
-      "id": "prod-14",
-      "slug": "portable-steam-inhaler",
-      "name": "Portable Vaporizer Steam Inhaler",
-      "category": "Mini Nebulizers",
-      "categorySlug": "mini-nebulizers",
-      "price": 449,
-      "originalPrice": 799,
-      "discount": 44,
-      "description": "Fast 30-second thermal warm steam inhaler for sinus relief, throat hydration, and respiratory comfort.",
-      "features": [
-        "Rapid PTC heating system delivers warm therapeutic mist in 30 seconds",
-        "Ergonomic soft contour silicone facial mask",
-        "Automatic dry-boil safety shutoff"
-      ],
-      "images": [
-        "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=900&q=85"
-      ],
-      "inStock": true,
-      "rating": 4.7,
-      "reviewsCount": 78
-    },
-    {
-      "id": "prod-15",
-      "slug": "cordless-mini-drill",
-      "name": "Cordless 12V Mini Drill Driver",
-      "category": "Tools",
-      "categorySlug": "tools",
-      "price": 1899,
-      "originalPrice": 2799,
-      "discount": 32,
-      "description": "Ergonomic 12V lithium-ion rotary driver & drill kit with 24 precision accessories.",
-      "features": [
-        "Variable 2-speed planetary gearbox (0-400 RPM / 0-1400 RPM)",
-        "18+1 adjustable torque clutch settings prevent stripping screw heads",
-        "Includes 24-piece accessory kit: high-speed drill bits and driver heads"
-      ],
-      "images": [
-        "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=900&q=85"
-      ],
-      "inStock": true,
-      "rating": 4.9,
-      "reviewsCount": 92
     }
   ]
 }

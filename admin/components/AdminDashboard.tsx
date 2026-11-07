@@ -10,7 +10,7 @@ import InquiriesTab from './tabs/InquiriesTab';
 import SubscribersTab from './tabs/SubscribersTab';
 import SettingsTab from './tabs/SettingsTab';
 import { Order, OrderStatus } from '@/src/lib/db';
-import { products as localProducts } from '@/src/data/products';
+import { Product } from '@/src/types';
 
 export interface Inquiry {
   id: string;
@@ -30,6 +30,7 @@ export interface Subscriber {
 export default function AdminDashboard() {
   const [currentTab, setCurrentTab] = useState('dashboard');
   const [orders, setOrders] = useState<Order[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [loading, setLoading] = useState(true);
@@ -40,6 +41,15 @@ export default function AdminDashboard() {
       const res = await fetch('/api/orders');
       const data = await res.json();
       if (res.ok && data.success) setOrders(data.orders);
+    } catch (e) { console.error(e); }
+  };
+
+  // Fetch products from backend (reflects add/delete)
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch('/api/products?limit=200');
+      const data = await res.json();
+      if (res.ok && data.success) setProducts(data.products);
     } catch (e) { console.error(e); }
   };
 
@@ -60,7 +70,7 @@ export default function AdminDashboard() {
   };
 
   const fetchAll = async () => {
-    await Promise.all([fetchOrders(), fetchInquiries(), fetchSubscribers()]);
+    await Promise.all([fetchOrders(), fetchProducts(), fetchInquiries(), fetchSubscribers()]);
     setLoading(false);
     setRefreshing(false);
   };
@@ -87,14 +97,12 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex min-h-screen bg-[#F7F8F6]">
-      {/* Left Sidebar */}
       <AdminSidebar
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
         pendingCount={pendingCount}
       />
 
-      {/* Right: Header + Content */}
       <div className="flex-1 flex flex-col min-w-0">
         <AdminHeader refreshing={refreshing} onRefresh={handleRefresh} />
 
@@ -111,7 +119,7 @@ export default function AdminDashboard() {
               {currentTab === 'dashboard' && (
                 <DashboardHome
                   orders={orders}
-                  products={localProducts}
+                  products={products}
                   inquiriesCount={inquiries.length}
                   subscribersCount={subscribers.length}
                   onTabChange={setCurrentTab}
@@ -122,7 +130,10 @@ export default function AdminDashboard() {
                 <OrdersTab orders={orders} onStatusUpdate={handleStatusUpdate} />
               )}
               {currentTab === 'products' && (
-                <ProductsTab products={localProducts} />
+                <ProductsTab
+                  products={products}
+                  onProductsChange={setProducts}
+                />
               )}
               {currentTab === 'inquiries' && (
                 <InquiriesTab inquiries={inquiries} />
