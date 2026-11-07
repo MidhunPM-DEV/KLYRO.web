@@ -101,8 +101,8 @@ export default function Footer() {
             </h4>
             <ul className="mt-4 space-y-2.5 text-xs">
               <li>
-                <Link href="/track" className="transition-colors hover:text-white font-medium text-white/90">
-                  Track Your Order
+                <Link href="/faq" className="transition-colors hover:text-white font-medium text-white/90">
+                  Frequently Asked Questions
                 </Link>
               </li>
               <li>
@@ -118,11 +118,6 @@ export default function Footer() {
               <li>
                 <Link href="#replacements" className="transition-colors hover:text-white">
                   7-Day Replacements
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="transition-colors hover:text-white">
-                  Frequently Asked Questions
                 </Link>
               </li>
               <li>

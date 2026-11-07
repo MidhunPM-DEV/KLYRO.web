@@ -7,7 +7,6 @@ import MobileMenu from "./MobileMenu";
 const links = [
   { label: "Home", href: "/" },
   { label: "Shop", href: "/shop" },
-  { label: "Track Order", href: "/track" },
   { label: "FAQ", href: "/faq" },
 ];
 
