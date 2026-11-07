@@ -100,6 +100,12 @@ exports.trackOrder = async (query) => {
   return { success: false, status: 404, error: `No orders found matching "${query}"` };
 };
 
+exports.deleteOrder = async (id) => {
+  const order = await Order.findOneAndDelete({ id: id.trim().toUpperCase() });
+  if (!order) return { success: false, status: 404, error: `Order #${id} not found` };
+  return { success: true, message: `Order #${order.id} deleted` };
+};
+
 exports.updateOrderStatus = async (id, status, message) => {
   const order = await Order.findOne({ id: id.trim().toUpperCase() });
   if (!order) return { success: false, status: 404, error: `Order #${id} not found` };

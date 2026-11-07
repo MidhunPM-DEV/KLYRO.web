@@ -1,33 +1,28 @@
-import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { NextRequest, NextResponse } from 'next/server';
 
-function getOrdersFilePath() {
-  // Check root data/orders.json
-  const rootPath = path.resolve(process.cwd(), '..', 'data', 'orders.json');
-  if (fs.existsSync(rootPath)) return rootPath;
-  const directPath = path.resolve(process.cwd(), 'data', 'orders.json');
-  return directPath;
-}
+const BACKEND = 'http://localhost:5001';
 
 export async function GET() {
   try {
-    const filePath = getOrdersFilePath();
-    if (!fs.existsSync(filePath)) {
-      return NextResponse.json({ success: true, orders: [] });
-    }
-    const raw = fs.readFileSync(filePath, 'utf8');
-    const orders = JSON.parse(raw);
-    return NextResponse.json({
-      success: true,
-      total: orders.length,
-      orders,
-    });
-  } catch (error: any) {
-    return NextResponse.json(
-      { success: false, error: error.message || 'Failed to fetch orders' },
-      { status: 500 }
-    );
+    const res = await fetch(`${BACKEND}/api/orders`, { cache: 'no-store' });
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
+  } catch (e: any) {
+    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
   }
 }
 
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const res = await fetch(`${BACKEND}/api/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    return NextResponse.json(data, { status: res.status });
+  } catch (e: any) {
+    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+  }
+}

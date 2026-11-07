@@ -6,20 +6,19 @@ import OrdersTable from '../OrdersTable';
 interface Props {
   orders: Order[];
   onStatusUpdate: (id: string, status: OrderStatus, note?: string) => Promise<void>;
+  onDeleteOrder: (id: string) => Promise<void>;
 }
 
-export default function OrdersTab({ orders, onStatusUpdate }: Props) {
+export default function OrdersTab({ orders, onStatusUpdate, onDeleteOrder }: Props) {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-black text-gray-900">Orders</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-black text-[#151515]">Orders</h1>
+        <p className="text-sm text-[#777777] mt-1">
           {orders.length} total orders — update status and contact customers via WhatsApp.
         </p>
       </div>
-      <div className="rounded-2xl bg-white border border-gray-100 shadow-sm p-4">
-        <OrdersTable orders={orders} onStatusUpdate={onStatusUpdate} />
-      </div>
+      <OrdersTable orders={orders} onStatusUpdate={onStatusUpdate} onDeleteOrder={onDeleteOrder} />
     </div>
   );
 }

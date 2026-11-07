@@ -100,6 +100,13 @@ app.get('/api/orders/:id', async (req, res) => {
   } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
+app.delete('/api/orders/:id', async (req, res) => {
+  try {
+    const data = await ordersController.deleteOrder(req.params.id);
+    res.status(data.status || 200).json(data);
+  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
+});
+
 app.patch('/api/orders/:id', async (req, res) => {
   try {
     const data = await ordersController.updateOrderStatus(req.params.id, req.body.status, req.body.message);

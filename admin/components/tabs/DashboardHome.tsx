@@ -14,6 +14,7 @@ interface Props {
   subscribersCount: number;
   onTabChange: (t: string) => void;
   onStatusUpdate: (id: string, status: OrderStatus, note?: string) => Promise<void>;
+  onDeleteOrder: (id: string) => Promise<void>;
 }
 
 // Weekly bar chart — maps last 7 days of orders
@@ -81,7 +82,7 @@ function CircleProgress({ percent }: { percent: number }) {
   );
 }
 
-export default function DashboardHome({ orders, products, inquiriesCount, subscribersCount, onTabChange, onStatusUpdate }: Props) {
+export default function DashboardHome({ orders, products, inquiriesCount, subscribersCount, onTabChange, onStatusUpdate, onDeleteOrder }: Props) {
   const fmt = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 
   const totalRevenue    = orders.reduce((s, o) => s + o.totalAmount, 0);
@@ -316,7 +317,7 @@ export default function DashboardHome({ orders, products, inquiriesCount, subscr
             </button>
           </div>
           <div className="p-4">
-            <OrdersTable orders={orders.slice(0, 4)} onStatusUpdate={onStatusUpdate} />
+            <OrdersTable orders={orders.slice(0, 4)} onStatusUpdate={onStatusUpdate} onDeleteOrder={onDeleteOrder} />
           </div>
         </div>
 

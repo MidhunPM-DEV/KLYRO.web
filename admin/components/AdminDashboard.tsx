@@ -99,6 +99,13 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleDeleteOrder = async (orderId: string) => {
+    const { ok, data } = await safeFetch(`/api/orders/${orderId}`, { method: 'DELETE' });
+    if (ok && data?.success) {
+      setOrders((prev) => prev.filter((o) => o.id !== orderId));
+    }
+  };
+
   const pendingCount = orders.filter((o) => o.status === 'placed').length;
 
   return (
@@ -143,10 +150,11 @@ export default function AdminDashboard() {
                   subscribersCount={subscribers.length}
                   onTabChange={setCurrentTab}
                   onStatusUpdate={handleStatusUpdate}
+                  onDeleteOrder={handleDeleteOrder}
                 />
               )}
               {currentTab === 'orders' && (
-                <OrdersTab orders={orders} onStatusUpdate={handleStatusUpdate} />
+                <OrdersTab orders={orders} onStatusUpdate={handleStatusUpdate} onDeleteOrder={handleDeleteOrder} />
               )}
               {currentTab === 'products' && (
                 <ProductsTab products={products} onProductsChange={setProducts} />
