@@ -120,11 +120,6 @@ export default function Footer() {
                   7-Day Replacements
                 </Link>
               </li>
-              <li>
-                <Link href="/admin" className="transition-colors text-[#4ade80] hover:text-white font-semibold">
-                  Admin Portal &rarr;
-                </Link>
-              </li>
             </ul>
           </div>
 
