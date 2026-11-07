@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import {
-  LayoutDashboard, ShoppingBag, Package, MessageSquare, Users,
+  LayoutDashboard, ShoppingBag, Package, Folder, MessageSquare, Users,
   Settings, HelpCircle, LogOut, ExternalLink,
 } from 'lucide-react';
 
@@ -16,6 +16,7 @@ const menuItems = [
   { id: 'dashboard',   label: 'Dashboard',   icon: LayoutDashboard },
   { id: 'orders',      label: 'Orders',      icon: ShoppingBag,    badge: true },
   { id: 'products',    label: 'Products',    icon: Package },
+  { id: 'categories',  label: 'Categories',  icon: Folder },
   { id: 'inquiries',   label: 'Inquiries',   icon: MessageSquare },
   { id: 'subscribers', label: 'Subscribers', icon: Users },
 ];

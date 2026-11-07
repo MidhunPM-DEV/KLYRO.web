@@ -1,0 +1,42 @@
+[
+  {
+    "id": "mini-electronics",
+    "name": "Mini Electronics",
+    "slug": "mini-electronics",
+    "description": "Compact smart audio, cooling fans, desk sweepers, and ambient lighting for modern workspaces.",
+    "itemCount": 4,
+    "image": "/categories/mini-electronics.jpg"
+  },
+  {
+    "id": "baby-products-toys",
+    "name": "Baby Products & Toys",
+    "slug": "baby-products-toys",
+    "description": "Certified food-grade silicone sets, gentle grooming tools, and mindful educational wooden toys.",
+    "itemCount": 4,
+    "image": "/categories/baby-products-toys.jpg"
+  },
+  {
+    "id": "mini-nebulizers",
+    "name": "Mini Nebulizers",
+    "slug": "mini-nebulizers",
+    "description": "Quiet ultrasonic mesh inhalers and portable steam vaporizers for fast respiratory relief on the go.",
+    "itemCount": 2,
+    "image": "/categories/mini-nebulizers.jpg"
+  },
+  {
+    "id": "tools",
+    "name": "Tools",
+    "slug": "tools",
+    "description": "Ergonomic cordless mini drills, precision magnetic screwdriver sets, and digital laser measuring tools.",
+    "itemCount": 3,
+    "image": "/categories/tools.jpg"
+  },
+  {
+    "id": "kitchen-items",
+    "name": "Kitchen Items",
+    "slug": "kitchen-items",
+    "description": "Cordless personal blenders, one-touch food choppers, borosilicate oil sprayers, and precision gram scales.",
+    "itemCount": 4,
+    "image": "/categories/kitchen-items.jpg"
+  }
+]

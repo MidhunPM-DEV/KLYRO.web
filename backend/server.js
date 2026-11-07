@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const siteConfig = require('./config/siteConfig');
 
 const productsController = require('./controllers/productsController');
+const categoriesController = require('./controllers/categoriesController');
 const ordersController   = require('./controllers/ordersController');
 const newsletterController = require('./controllers/newsletterController');
 const inquiriesController  = require('./controllers/inquiriesController');
@@ -73,11 +74,11 @@ app.delete('/api/products/:id', async (req, res) => {
 });
 
 // ── Categories ────────────────────────────────────────────────
-app.get('/api/categories', async (req, res) => {
-  try {
-    res.json(await productsController.getCategories());
-  } catch (e) { res.status(500).json({ success: false, error: e.message }); }
-});
+app.get('/api/categories', categoriesController.getAllCategories);
+app.get('/api/categories/:slug', categoriesController.getCategoryBySlug);
+app.post('/api/categories', categoriesController.addCategory);
+app.patch('/api/categories/:id', categoriesController.updateCategory);
+app.delete('/api/categories/:id', categoriesController.deleteCategory);
 
 // ── Orders ────────────────────────────────────────────────────
 app.get('/api/orders', async (req, res) => {

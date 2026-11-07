@@ -6,11 +6,21 @@ import AdminHeader from './AdminHeader';
 import DashboardHome from './tabs/DashboardHome';
 import OrdersTab from './tabs/OrdersTab';
 import ProductsTab from './tabs/ProductsTab';
+import CategoriesTab from './tabs/CategoriesTab';
 import InquiriesTab from './tabs/InquiriesTab';
 import SubscribersTab from './tabs/SubscribersTab';
 import SettingsTab from './tabs/SettingsTab';
 import { Order, OrderStatus } from '@/src/lib/db';
 import { Product } from '@/src/types';
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  itemCount: number;
+  image: string;
+}
 
 export interface Inquiry {
   id: string;
@@ -46,6 +56,7 @@ export default function AdminDashboard() {
   const [currentTab, setCurrentTab] = useState('dashboard');
   const [orders, setOrders] = useState<Order[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [loading, setLoading] = useState(true);
@@ -60,6 +71,11 @@ export default function AdminDashboard() {
   const fetchProducts = async () => {
     const { ok, data } = await safeFetch('/api/products?limit=200');
     if (ok && data?.success) setProducts(data.products);
+  };
+
+  const fetchCategories = async () => {
+    const { ok, data } = await safeFetch('http://localhost:5001/api/categories');
+    if (ok && data?.success) setCategories(data.categories);
   };
 
   const fetchInquiries = async () => {
@@ -79,7 +95,7 @@ export default function AdminDashboard() {
 
   const fetchAll = async () => {
     await checkBackend();
-    await Promise.all([fetchOrders(), fetchProducts(), fetchInquiries(), fetchSubscribers()]);
+    await Promise.all([fetchOrders(), fetchProducts(), fetchCategories(), fetchInquiries(), fetchSubscribers()]);
     setLoading(false);
     setRefreshing(false);
   };
@@ -158,6 +174,9 @@ export default function AdminDashboard() {
               )}
               {currentTab === 'products' && (
                 <ProductsTab products={products} onProductsChange={setProducts} />
+              )}
+              {currentTab === 'categories' && (
+                <CategoriesTab categories={categories} onCategoriesChange={setCategories} />
               )}
               {currentTab === 'inquiries' && (
                 <InquiriesTab inquiries={inquiries} />
