@@ -6,7 +6,7 @@ import { ArrowUpRight, ArrowRight, ShieldCheck, Zap, Truck, Star } from "lucide-
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden bg-white pt-8 pb-16 sm:pt-12 sm:pb-24 lg:pt-16 lg:pb-28">
+    <section className="relative overflow-hidden bg-white pt-16 pb-24 sm:pt-20 sm:pb-32 lg:pt-24 lg:pb-40 min-h-[85vh] flex items-center">
       {/* Subtle background ambient glow */}
       <div className="absolute top-1/4 right-0 -z-10 h-96 w-96 rounded-full bg-[#005E23]/5 blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 left-10 -z-10 h-80 w-80 rounded-full bg-[#F7F8F6] blur-2xl pointer-events-none" />
