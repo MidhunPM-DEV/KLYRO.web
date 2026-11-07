@@ -155,13 +155,13 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
         </div>
       </div>
 
-      {/* Dual CTA Buttons Side-by-Side (Matching Reference) */}
-      <div className="mt-4 grid grid-cols-2 gap-2 pt-1">
-        {/* Button 1: Add to Cart (White Pill with Green Border & Cart Icon) */}
+      {/* Dual CTA Buttons Side-by-Side (Rounded Rectangle Style) */}
+      <div className="mt-4 grid grid-cols-2 gap-2.5 pt-1">
+        {/* Button 1: Add to Cart (White Rounded Rectangle with Green Border & Cart Icon) */}
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex h-11 w-full items-center justify-center gap-1.5 rounded-full border border-[#005E23] bg-white text-xs sm:text-[13px] font-bold text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] hover:shadow-[0_4px_12px_rgba(0,94,35,0.15)] active:scale-[0.98]"
+          className="flex h-11 w-full items-center justify-center gap-1.5 rounded-xl border-2 border-[#005E23] bg-white text-xs sm:text-[13px] font-bold text-[#005E23] shadow-xs transition-all duration-200 hover:bg-[#F2F7F4] hover:shadow-[0_4px_12px_rgba(0,94,35,0.15)] active:scale-[0.98]"
         >
           {added ? (
             <>
@@ -176,11 +176,11 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
           )}
         </button>
 
-        {/* Button 2: Buy Now (Brand Emerald Green Pill with White Text) */}
+        {/* Button 2: Buy Now (Brand Emerald Green Rounded Rectangle with White Text) */}
         <button
           type="button"
           onClick={handleBuyNow}
-          className="flex h-11 w-full items-center justify-center rounded-full bg-[#005E23] text-xs sm:text-[13px] font-bold text-white shadow-[0_4px_14px_rgba(0,94,35,0.28)] transition-all duration-200 hover:bg-[#004719] hover:shadow-[0_6px_20px_rgba(0,94,35,0.38)] active:scale-[0.98]"
+          className="flex h-11 w-full items-center justify-center rounded-xl border border-[#005E23] bg-[#005E23] text-xs sm:text-[13px] font-bold text-white shadow-[0_4px_14px_rgba(0,94,35,0.28)] transition-all duration-200 hover:bg-[#004719] hover:border-[#004719] hover:shadow-[0_6px_20px_rgba(0,94,35,0.38)] active:scale-[0.98]"
         >
           <span>Buy Now</span>
         </button>
