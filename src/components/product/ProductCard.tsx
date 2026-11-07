@@ -54,27 +54,23 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
 
   return (
     <div className="group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-[#E8ECE6] bg-white p-4 text-[#151515] shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 hover:border-[#005E23]/40 hover:shadow-[0_12px_36px_rgba(0,0,0,0.08)] sm:p-5">
-      {/* Top Media & Actions Header */}
       <div>
-        <div className="relative z-10 flex items-center justify-between">
-          {/* Top-Left Discount Pill Badge */}
-          {product.discount > 0 ? (
-            <span className="rounded-full bg-[#005E23] px-3 py-1 text-[11px] font-bold tracking-wider text-white shadow-xs">
+        {/* Product Image Stage (Edge-to-Edge Filled Image with Floating Badges) */}
+        <div className="relative aspect-square sm:aspect-[4/3.5] w-full overflow-hidden rounded-[22px] bg-[#F7F8F6]">
+          {/* Top-Left Floating Discount Pill */}
+          {product.discount > 0 && (
+            <span className="absolute left-3 top-3 z-10 rounded-full bg-[#005E23] px-3 py-1 text-[11px] font-bold tracking-wider text-white shadow-xs">
               -{product.discount}% OFF
-            </span>
-          ) : (
-            <span className="rounded-full bg-[#EBF4EE] px-3 py-1 text-[11px] font-semibold tracking-wider text-[#005E23]">
-              FEATURED
             </span>
           )}
 
-          {/* Top-Right Action Icons: Quick View & Wishlist Heart */}
-          <div className="flex items-center gap-1.5">
+          {/* Top-Right Floating Actions: Quick View & Wishlist Heart */}
+          <div className="absolute right-3 top-3 z-10 flex items-center gap-1.5">
             <button
               type="button"
               onClick={handleQuickView}
               aria-label={`Quick view ${product.name}`}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#777777] opacity-0 shadow-xs border border-[#E8ECE6] transition-all duration-200 hover:bg-[#005E23] hover:text-white group-hover:opacity-100"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-[#555555] opacity-0 shadow-xs border border-white/80 backdrop-blur-xs transition-all duration-200 hover:bg-[#005E23] hover:text-white group-hover:opacity-100"
               title="Quick View"
             >
               <Eye size={15} />
@@ -96,10 +92,8 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
               />
             </button>
           </div>
-        </div>
 
-        {/* Product Image Stage (Soft Pastel Tint matching reference) */}
-        <div className="relative mt-2.5 flex aspect-square sm:aspect-[4/3.5] w-full items-center justify-center overflow-hidden rounded-[22px] bg-gradient-to-b from-[#EBF5EE] to-[#E3EFE7] p-3 sm:p-4">
+          {/* Filled Product Image Link */}
           <Link
             href={`/product/${product.slug}`}
             className="relative block h-full w-full"
@@ -110,23 +104,18 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
               fill
               priority={priorityImage}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-contain object-center transition-transform duration-500 ease-out group-hover:scale-106"
+              className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-106"
             />
           </Link>
 
-          {/* Bottom Center Pill Badge or Carousel Indicators (matching reference) */}
-          <div className="pointer-events-none absolute bottom-2.5 left-0 right-0 flex items-center justify-center">
-            {imageBadge ? (
+          {/* Bottom Floating Badge (e.g. New Arrival / Bestseller) */}
+          {imageBadge && (
+            <div className="pointer-events-none absolute bottom-3 left-0 right-0 z-10 flex items-center justify-center">
               <span className="rounded-full border border-white/80 bg-white/95 px-3.5 py-1 text-[11px] font-bold text-[#005E23] shadow-xs backdrop-blur-xs">
                 {imageBadge}
               </span>
-            ) : (
-              <div className="flex items-center gap-1.5">
-                <span className="h-1.5 w-4 rounded-full bg-[#005E23]" />
-                <span className="h-1.5 w-6 rounded-full bg-white/70" />
-              </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
 
         {/* Product Content Details */}
