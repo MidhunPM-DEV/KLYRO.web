@@ -1,24 +1,21 @@
+'use client';
+
 import Link from "next/link";
 import Image from "next/image";
-import type { ReactNode } from "react";
 import { Search, ShoppingBag } from "lucide-react";
 import MobileMenu from "./MobileMenu";
+import { useCart } from "@/src/context/CartContext";
 
 const links = [
   { label: "Home", href: "/" },
   { label: "Shop", href: "/shop" },
+  { label: "New Arrivals", href: "/new-arrivals" },
   { label: "FAQ", href: "/faq" },
 ];
 
-function IconLink({ label, href, children }: { label: string; href: string; children: ReactNode }) {
-  return (
-    <Link href={href} aria-label={label} className="text-[#343434] transition-colors hover:text-[#8b5e3c]">
-      {children}
-    </Link>
-  );
-}
-
 export default function Navbar() {
+  const { openCart, openSearch, totalItems } = useCart();
+
   return (
     <nav className="sticky top-0 z-20 border-b border-black/10 bg-[#fbfaf8]/95 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-5 lg:grid lg:grid-cols-[1fr_auto_auto] lg:px-8">
@@ -47,12 +44,25 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4 lg:justify-self-end">
           <div className="hidden items-center gap-4 sm:flex">
-            <IconLink label="Search" href="#search">
+            <button
+              onClick={openSearch}
+              aria-label="Search"
+              className="text-[#343434] transition-colors hover:text-[#8b5e3c]"
+            >
               <Search size={19} strokeWidth={1.6} />
-            </IconLink>
-            <IconLink label="Shopping bag" href="#bag">
+            </button>
+            <button
+              onClick={openCart}
+              aria-label="Shopping bag"
+              className="relative text-[#343434] transition-colors hover:text-[#8b5e3c]"
+            >
               <ShoppingBag size={19} strokeWidth={1.6} />
-            </IconLink>
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#005E23] text-[10px] font-bold text-white">
+                  {totalItems}
+                </span>
+              )}
+            </button>
           </div>
           <MobileMenu />
         </div>
