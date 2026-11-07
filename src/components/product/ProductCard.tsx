@@ -46,20 +46,20 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
   const formatPrice = (amount: number) => `₹${amount.toLocaleString('en-IN')}`;
 
   return (
-    <div className="group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-[#272930] bg-gradient-to-b from-[#18191E] via-[#141518] to-[#101114] p-4 text-white shadow-[0_12px_32px_rgba(0,0,0,0.22)] transition-all duration-300 hover:border-[#005E23]/60 hover:shadow-[0_16px_40px_rgba(0,94,35,0.25)] sm:p-5">
-      {/* Subtle ambient green glow in top-left */}
-      <div className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full bg-[#005E23]/20 blur-2xl transition-opacity duration-300 group-hover:bg-[#005E23]/35" />
+    <div className="group relative flex flex-col justify-between overflow-hidden rounded-[26px] border border-[#E2E6DF] bg-[#F7F8F6] p-4 text-[#151515] shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300 hover:border-[#005E23]/50 hover:bg-[#F9FAF8] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] sm:p-5">
+      {/* Subtle ambient green accent in top-left */}
+      <div className="pointer-events-none absolute -top-10 -left-10 h-32 w-32 rounded-full bg-[#005E23]/[0.08] blur-2xl transition-opacity duration-300 group-hover:bg-[#005E23]/15" />
 
       {/* Top Media & Actions Header */}
       <div>
         <div className="relative z-10 flex items-center justify-between">
           {/* Top-Left Discount Pill Badge */}
           {product.discount > 0 ? (
-            <span className="rounded-full bg-[#007A2F] px-3 py-1 text-[11px] font-bold tracking-wider text-white shadow-sm">
+            <span className="rounded-full bg-[#005E23] px-3 py-1 text-[11px] font-bold tracking-wider text-white shadow-xs">
               -{product.discount}% OFF
             </span>
           ) : (
-            <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold tracking-wider text-white/80">
+            <span className="rounded-full bg-[#E8ECE6] px-3 py-1 text-[11px] font-semibold tracking-wider text-[#555555]">
               NEW
             </span>
           )}
@@ -70,7 +70,7 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
               type="button"
               onClick={handleQuickView}
               aria-label={`Quick view ${product.name}`}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/80 opacity-0 backdrop-blur-sm transition-all duration-200 hover:bg-white hover:text-[#151515] group-hover:opacity-100"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#555555] opacity-0 shadow-xs transition-all duration-200 hover:bg-[#005E23] hover:text-white group-hover:opacity-100"
               title="Quick View"
             >
               <Eye size={15} />
@@ -80,22 +80,22 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
               type="button"
               onClick={handleToggleWishlist}
               aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-white/85 transition-transform duration-200 hover:scale-115 active:scale-95"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/70 text-[#777777] shadow-xs backdrop-blur-xs transition-transform duration-200 hover:scale-110 hover:text-[#151515] active:scale-95"
             >
               <Heart
-                size={20}
+                size={18}
                 className={`transition-colors duration-200 ${
                   isWishlisted
                     ? "fill-[#EF4444] text-[#EF4444]"
-                    : "text-white/90 hover:text-white"
+                    : "text-[#666666] hover:text-[#151515]"
                 }`}
               />
             </button>
           </div>
         </div>
 
-        {/* Product Image Stage */}
-        <div className="relative mt-2 flex aspect-square sm:aspect-[4/3.5] w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-white/[0.03] to-black/30 p-2">
+        {/* Product Image Stage (Crisp White Inset on Offwhite Card) */}
+        <div className="relative mt-2.5 flex aspect-square sm:aspect-[4/3.5] w-full items-center justify-center overflow-hidden rounded-2xl border border-[#EAECE6] bg-white p-2.5 shadow-[inset_0_1px_3px_rgba(0,0,0,0.02)]">
           <Link
             href={`/product/${product.slug}`}
             className="relative block h-full w-full"
@@ -112,20 +112,20 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
 
           {/* Carousel Slide Indicators matching reference */}
           <div className="pointer-events-none absolute bottom-2.5 left-0 right-0 flex items-center justify-center gap-1.5">
-            <span className="h-1.5 w-4 rounded-full bg-[#00873E] shadow-[0_0_8px_rgba(0,135,62,0.6)]" />
-            <span className="h-1.5 w-6 rounded-full bg-white/35" />
+            <span className="h-1.5 w-4 rounded-full bg-[#005E23]" />
+            <span className="h-1.5 w-6 rounded-full bg-[#D1D5DB]" />
           </div>
         </div>
 
         {/* Product Content Details */}
         <div className="mt-3.5">
           {/* Category in clean uppercase */}
-          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9CA3AF]">
+          <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#777777]">
             {product.category}
           </span>
 
           {/* Product Name */}
-          <h3 className="mt-1 text-[15px] sm:text-base font-semibold leading-snug text-white transition-colors line-clamp-2 group-hover:text-[#4ade80]">
+          <h3 className="mt-1 text-[15px] sm:text-base font-bold leading-snug text-[#151515] transition-colors line-clamp-2 group-hover:text-[#005E23]">
             <Link href={`/product/${product.slug}`}>
               {product.name}
             </Link>
@@ -133,11 +133,11 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
 
           {/* Pricing Row */}
           <div className="mt-2 flex items-baseline gap-2">
-            <span className="text-xl sm:text-[22px] font-extrabold tracking-tight text-[#00E676]">
+            <span className="text-xl sm:text-[22px] font-black tracking-tight text-[#005E23]">
               {formatPrice(product.price)}
             </span>
             {product.originalPrice > product.price && (
-              <span className="text-xs font-normal text-[#9CA3AF] line-through">
+              <span className="text-xs font-normal text-[#888888] line-through">
                 {formatPrice(product.originalPrice)}
               </span>
             )}
@@ -146,8 +146,8 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
           {/* Rating & Review count */}
           <div className="mt-1.5 flex items-center gap-1.5 text-xs">
             <Star size={13} className="fill-[#F59E0B] text-[#F59E0B]" />
-            <span className="font-semibold text-white">{product.rating.toFixed(1)}</span>
-            <span className="text-[#9CA3AF]">
+            <span className="font-bold text-[#151515]">{product.rating.toFixed(1)}</span>
+            <span className="text-[#777777]">
               ({product.reviewsCount || 95} reviews)
             </span>
           </div>
@@ -156,11 +156,11 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
 
       {/* Dual CTA Buttons (Matching Reference) */}
       <div className="mt-4 flex flex-col gap-2 pt-1">
-        {/* Button 1: Add to Cart (White Pill with Green Cart Icon) */}
+        {/* Button 1: Add to Cart (White Pill with Green Cart Icon & Border) */}
         <button
           type="button"
           onClick={handleAddToCart}
-          className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-white text-xs sm:text-[13px] font-bold text-[#005E23] shadow-sm transition-all duration-200 hover:bg-[#F3F4F6] active:scale-[0.98]"
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-full border border-[#DCE1D8] bg-white text-xs sm:text-[13px] font-bold text-[#005E23] shadow-xs transition-all duration-200 hover:border-[#005E23]/50 hover:bg-[#F2F4F0] active:scale-[0.98]"
         >
           {added ? (
             <>
@@ -175,11 +175,11 @@ export default function ProductCard({ product, priorityImage = false }: ProductC
           )}
         </button>
 
-        {/* Button 2: Buy Now (Emerald Green Pill with White Text) */}
+        {/* Button 2: Buy Now (Brand Emerald Green Pill with White Text) */}
         <button
           type="button"
           onClick={handleBuyNow}
-          className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#005E23] text-xs sm:text-[13px] font-bold text-white shadow-md transition-all duration-200 hover:bg-[#004719] active:scale-[0.98]"
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#005E23] text-xs sm:text-[13px] font-bold text-white shadow-sm transition-all duration-200 hover:bg-[#004719] hover:shadow-md active:scale-[0.98]"
         >
           <span>Buy Now</span>
         </button>
